@@ -171,7 +171,7 @@ export function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.2, duration: 0.6 }}
-        className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2 flex flex-col items-center gap-1.5 text-mut/50 transition-colors hover:text-accent"
+        className="absolute bottom-15 left-1/2 z-10 -translate-x-1/2 flex flex-col items-center gap-1.5 text-mut/50 transition-colors hover:text-accent"
         aria-label="Scroll to selected work"
       >
         <span className="font-mono text-[10px] tracking-widest uppercase">Scroll</span>

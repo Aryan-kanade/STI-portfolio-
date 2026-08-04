@@ -35,7 +35,7 @@ export const HERO = {
 export const PROJECTS = [
   {
     name: "EMS Dashboard",
-    tag: "ENERGY · IoT",
+    tag: "ENERGY · IoT · AI",
     headline: "Unified distributed energy data into one live, role-based dashboard",
     problem:
       "Energy readings lived scattered across separate systems and spreadsheets — no single source of truth, no way to see every site at a glance, and alerts arrived too late.",
@@ -51,7 +51,7 @@ export const PROJECTS = [
   },
   {
     name: "Interstellar Platform",
-    tag: "AUTOMATION · WEB",
+    tag: "AUTOMATION · AI · WEB",
     headline: "Connected ordering, admin and technician workflows under one platform",
     problem:
       "Ordering, administration and technician work were three disconnected flows — every update forced manual re-entry, and data drifted out of sync the moment it was written down.",
@@ -67,7 +67,7 @@ export const PROJECTS = [
   },
   {
     name: "Field Team App",
-    tag: "FIELD · MOBILE",
+    tag: "FIELD · MOBILE · AI",
     headline: "Gave remote field teams a single, live view of every job",
     problem:
       "Tracking what remote team members were working on, where, and whether it was actually done meant phone calls, photos in chat groups and end-of-day spreadsheets.",
@@ -113,7 +113,7 @@ export const CAPABILITIES = [
     icon: "cpu",
     title: "AI & IoT Solutions",
     desc: "EMS dashboards for manufacturing, solar and industrial — live readings, alerts, reports.",
-    points: ["Energy & EMS dashboards", "Sensor & device integration", "Alerts & reports"],
+    points: ["Energy & EMS dashboards", "AI-powered analytics", "Sensor & device integration", "Alerts & reports"],
   },
   {
     icon: "cloud",
@@ -140,13 +140,13 @@ export const METHODOLOGY = {
       num: "01",
       key: "strategy",
       title: "Strategy",
-      desc: "I map your operations, find the friction, and scope the smallest system that removes it.",
+      desc: "I map your operations, find the friction, and see where AI can help.",
     },
     {
       num: "02",
       key: "architecture",
       title: "Architecture",
-      desc: "Clean, scalable design — the stack that still makes sense when your business grows.",
+      desc: "Clean, scalable AI-ready design — the stack that still makes sense when your business grows.",
     },
     {
       num: "03",
@@ -187,7 +187,7 @@ export const PRINCIPLES = [
 export const FOUNDER = {
   name: "Omkar Patil",
   role: "Founder · Shivaswarajya Techno Innovation",
-  bio: "Full-stack software engineer running Shivaswarajya since May 2025 — helping businesses convert manual operations into reliable digital systems. Based in Kolhapur, Maharashtra, working with clients across India and beyond.",
+  bio: "Full-stack AI engineer running Shivaswarajya since May 2025 — helping businesses convert manual operations into AI-powered digital systems. Based in Kolhapur, Maharashtra, working with clients across India and beyond.",
   quote:
     "Good software should reduce friction, make decisions clearer, and continue working when the business grows.",
   highlights: [
@@ -257,7 +257,7 @@ export const TESTIMONIALS = [
 // 10 — CTA band
 export const CTA = {
   eyebrow: "// Let's build",
-  headline: "Got an operation that should be software by now?",
+  headline: "Got an operation that should be AI-powered by now?",
   sub: ["Tell me what you're running today and the outcome you want.", "I'll come back within one business day."] as const,
   primaryCta: { label: "Get a Quote", href: "#contact" },
   secondaryCta: { label: "Continue on WhatsApp", href: CONTACT.whatsapp },

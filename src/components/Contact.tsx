@@ -190,7 +190,7 @@ export function Contact() {
                     onChange={(v) => update("details", v)}
                     isTextarea
                     rows={3}
-                    placeholder="What process are you running today, and what outcome do you want?"
+                    placeholder="What process are you running today? How can AI help?"
                   />
 
                   <div className="flex flex-wrap items-center gap-3">
