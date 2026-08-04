@@ -23,11 +23,23 @@ export function SectionHeading({ num, kicker, title, sub }: { num: string; kicke
   )
 }
 
-export function Reveal({ children, delay = 0, className }: { children: ReactNode; delay?: number; className?: string }) {
+export function Reveal({ children, delay = 0, className, direction = "up" }: { children: ReactNode; delay?: number; className?: string; direction?: "up" | "left" | "right" | "scale" }) {
+  const initials: Record<string, { opacity: number; x?: number; y?: number; scale?: number }> = {
+    up:    { opacity: 0, y: 24 },
+    left:  { opacity: 0, x: -24 },
+    right: { opacity: 0, x: 24 },
+    scale: { opacity: 0, scale: 0.92 },
+  }
+  const visibles: Record<string, { opacity: number; x?: number; y?: number; scale?: number }> = {
+    up:    { opacity: 1, y: 0 },
+    left:  { opacity: 1, x: 0 },
+    right: { opacity: 1, x: 0 },
+    scale: { opacity: 1, scale: 1 },
+  }
   return (
     <motion.div
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={initials[direction]}
+      whileInView={visibles[direction]}
       viewport={{ once: true, margin: "-60px" }}
       transition={{ duration: 0.55, ease: "easeOut", delay }}
       className={className}

@@ -18,7 +18,30 @@ const TRUST = [
   { icon: Code, label: "Full source code ownership" },
 ]
 
-export function CTABand() {
+/** Splits CTA.headline into text + shimmered keyword (last word before "?"). */
+function CTAHeadline() {
+  const raw = CTA.headline // "Got an operation that should be AI-powered by now?"
+  // Find the keyword to shimmer — last word before the question mark
+  const match = raw.match(/^(.+?)\s+(AI-powered)\s+\?$/i)
+  const parts = match
+    ? { before: match[1] + " ", keyword: match[2], after: " by now?" }
+    : { before: "", keyword: raw, after: "" }
+
+  return (
+    <motion.h2
+      variants={item}
+      className="mx-auto max-w-2xl font-display text-3xl leading-tight font-bold tracking-tight sm:text-4xl md:text-5xl"
+    >
+      {parts.before}
+      <GradientShimmer gradient={BRAND_GRADIENT} baseColor="var(--color-copper)" duration={2} className="font-display font-bold">
+        {parts.keyword}
+      </GradientShimmer>
+      {parts.after}
+    </motion.h2>
+  )
+}
+
+export function CtaBand() {
   const magneticRef = useRef<HTMLDivElement>(null)
   useMagnetic(magneticRef, 0.25)
 
@@ -30,7 +53,7 @@ export function CTABand() {
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: "-60px" }}
-          className="cta-band relative mx-auto max-w-7xl overflow-hidden rounded-3xl border border-accent/30 bg-bg-2 px-7 py-14 text-center sm:px-12 sm:py-20"
+          className="cta-band animated-border relative mx-auto max-w-7xl overflow-hidden rounded-3xl bg-bg-2 px-7 py-14 text-center sm:px-12 sm:py-20"
         >
           <div
             className="absolute inset-0 -z-10 opacity-60"
@@ -42,14 +65,7 @@ export function CTABand() {
             {CTA.eyebrow}
           </motion.p>
 
-          <motion.h2
-            variants={item}
-            className="mx-auto max-w-2xl font-display text-3xl leading-tight font-bold tracking-tight sm:text-4xl md:text-5xl"
-          >
-            Got an operation that should be{" "}
-            <GradientShimmer gradient={BRAND_GRADIENT} baseColor="var(--color-copper)" duration={2} className="font-display font-bold">software</GradientShimmer>{" "}
-            by now?
-          </motion.h2>
+          <CTAHeadline />
 
           <motion.p variants={item} className="mx-auto mt-5 max-w-lg text-mut">
             {CTA.sub[0]}

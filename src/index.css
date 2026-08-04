@@ -59,9 +59,6 @@ html {
 
 body {
   overflow-x: hidden;
-}
-
-body {
   background: var(--color-bg);
   color: var(--color-ink);
   font-family: var(--font-body);
@@ -122,14 +119,7 @@ section#work {
   box-shadow: var(--shadow-glow);
 }
 
-/* ── Brand gradient — amber → bronze → deep copper ── */
-.grad-text {
-  background: linear-gradient(100deg, var(--color-amber), var(--color-accent) 55%, var(--color-copper));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
+/* ── Brand gradient line — amber → bronze → deep copper ── */
 .grad-line {
   background: linear-gradient(90deg, var(--color-amber), var(--color-accent), var(--color-copper));
 }
@@ -204,21 +194,9 @@ section#work {
   100% { transform: translate3d(-30vw, -40vh, 0); opacity: 0; }
 }
 
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
 @keyframes ripple {
   0% { transform: scale(0); opacity: 1; }
   100% { transform: scale(1); opacity: 0; }
-}
-
-@keyframes particle-float {
-  0% { transform: translateY(0) scale(0); opacity: 0; }
-  15% { opacity: 1; transform: scale(1); }
-  85% { opacity: 0.6; }
-  100% { transform: translateY(-100vh) scale(0.5); opacity: 0; }
 }
 
 @keyframes glow-pulse {
@@ -226,9 +204,81 @@ section#work {
   50% { box-shadow: 0 0 30px -8px rgba(205, 127, 50, 0.3); }
 }
 
-@keyframes scan-line {
-  0% { transform: translateY(-100%); }
-  100% { transform: translateY(100%); }
+/* ── Infinite carousel scroll ── */
+.carousel-track {
+  animation: carousel-scroll 30s linear infinite;
+}
+.carousel-track:hover,
+.carousel-track:focus-within {
+  animation-play-state: paused;
+}
+
+@keyframes carousel-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ── Animated conic border for CTA band ── */
+@property --border-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.animated-border {
+  --border-angle: 0deg;
+  border-image: conic-gradient(from var(--border-angle), transparent 30%, var(--color-accent) 50%, transparent 70%) 1;
+  animation: rotate-border 4s linear infinite;
+}
+
+@keyframes rotate-border {
+  to { --border-angle: 360deg; }
+}
+
+/* ── Animated conic border for founder portrait (circular) ── */
+@property --portrait-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.animated-border-portrait {
+  --portrait-angle: 0deg;
+  background: conic-gradient(from var(--portrait-angle), var(--color-amber), var(--color-accent), var(--color-copper), var(--color-accent), var(--color-amber));
+  animation: rotate-portrait-border 6s linear infinite;
+}
+
+@keyframes rotate-portrait-border {
+  to { --portrait-angle: 360deg; }
+}
+
+/* ── Floating gradient orbs ── */
+.gradient-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  opacity: 0.15;
+}
+
+@keyframes orb-drift-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(40px, -30px) scale(1.1); }
+  50% { transform: translate(-20px, -50px) scale(0.95); }
+  75% { transform: translate(-40px, 20px) scale(1.05); }
+}
+
+@keyframes orb-drift-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(-30px, 40px) scale(0.9); }
+  50% { transform: translate(50px, 20px) scale(1.1); }
+  75% { transform: translate(20px, -40px) scale(1); }
+}
+
+@keyframes orb-drift-3 {
+  0%, 100% { transform: translate(0, 0) scale(1.05); }
+  33% { transform: translate(-50px, -20px) scale(0.95); }
+  66% { transform: translate(30px, 40px) scale(1.1); }
 }
 
 .animate-ripple {
@@ -244,6 +294,8 @@ section#work {
   html { scroll-behavior: auto; }
   .anim-float, .anim-bounce { animation: none; }
   .particle { animation: none !important; }
+  .carousel-track { animation: none !important; }
+  .gradient-orb { animation: none !important; }
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
@@ -298,7 +350,7 @@ html {
   /* Ensure text is readable */
   .text-mut { color: #555 !important; }
   .text-accent { color: var(--color-accent); print-color-adjust: exact; -webkit-print-color-adjust: exact; }
-  .grad-text, .grad-line { color: var(--color-accent) !important; background: none !important; -webkit-text-fill-color: initial !important; }
+  .grad-line { color: var(--color-accent) !important; background: none !important; -webkit-text-fill-color: initial !important; }
 
   /* Single column, full width */
   section { page-break-inside: avoid; }

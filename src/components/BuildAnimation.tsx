@@ -26,6 +26,34 @@ function EngineImage() {
   )
 }
 
+/** Process steps */
+function TimelineSteps() {
+  return (
+    <ol className="relative space-y-10">
+      {/* Connecting line — behind all numbers */}
+      <span
+        className="absolute left-[19px] top-5 bottom-5 w-px bg-line z-0"
+        aria-hidden
+      />
+      {METHODOLOGY.steps.map((s, i) => (
+        <Reveal key={s.num} delay={i * 0.1}>
+          <li className="group relative flex gap-12 pointer-events-auto">
+            <div className="flex flex-col items-center">
+              <span className="relative z-10 grid size-10 shrink-0 place-items-center rounded-lg border border-line bg-bg font-mono text-xs text-accent transition-all duration-200 group-hover:border-accent/50 group-hover:scale-110">
+                {s.num}
+              </span>
+            </div>
+            <div className="min-w-0 pb-2 pl-2">
+              <h3 className="font-display text-lg font-semibold">{s.title}</h3>
+              <p className="mt-1.5 text-sm leading-relaxed text-mut">{s.desc}</p>
+            </div>
+          </li>
+        </Reveal>
+      ))}
+    </ol>
+  )
+}
+
 export function BuildAnimation() {
   return (
     <section id="process" className="py-10 sm:py-14">
@@ -54,29 +82,7 @@ export function BuildAnimation() {
 
           {/* The process steps */}
           <div className="order-1 lg:order-2">
-            <ol className="relative space-y-10">
-              {METHODOLOGY.steps.map((s, i) => (
-                <Reveal key={s.num} delay={i * 0.1}>
-                  <li className="group relative flex gap-12">
-                    <div className="flex flex-col items-center">
-                      <span className="relative z-10 grid size-10 shrink-0 place-items-center rounded-lg border border-line bg-bg-2/60 font-mono text-xs text-accent transition-all duration-200 group-hover:border-accent/50 group-hover:bg-accent/10 group-hover:scale-110">
-                        {s.num}
-                      </span>
-                      {i < METHODOLOGY.steps.length - 1 && (
-                        <span
-                          className="w-px flex-1 grad-line mb-[-2.5rem]"
-                          aria-hidden
-                        />
-                      )}
-                    </div>
-                    <div className="min-w-0 pb-2 pl-2">
-                      <h3 className="font-display text-lg font-semibold">{s.title}</h3>
-                      <p className="mt-1.5 text-sm leading-relaxed text-mut">{s.desc}</p>
-                    </div>
-                  </li>
-                </Reveal>
-              ))}
-            </ol>
+            <TimelineSteps />
           </div>
         </div>
       </div>

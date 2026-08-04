@@ -2,6 +2,7 @@ import { useScroll, useMotionValueEvent, motion, AnimatePresence } from "framer-
 import { useEffect, useRef, useState } from "react"
 import { NAV, CONTACT } from "../lib/data"
 import { Logo } from "./Logo"
+import { useMagnetic } from "../lib/utils"
 
 const SECTION_IDS = ["work", "capabilities", "process", "about", "contact"]
 
@@ -12,6 +13,8 @@ export function Navbar() {
   const menuRef = useRef<HTMLDivElement>(null)
   const firstLinkRef = useRef<HTMLAnchorElement>(null)
   const toggleRef = useRef<HTMLButtonElement>(null)
+  const ctaRef = useRef<HTMLAnchorElement>(null)
+  useMagnetic(ctaRef, 0.25)
 
   const [active, setActive] = useState("")
   // Blur intensity: increases as user scrolls deeper (max 20px blur)
@@ -125,11 +128,11 @@ export function Navbar() {
               }`}
             >
               {n.label}
-              {/* Active indicator dot */}
+              {/* Active gradient underline */}
               {isActive(n.href) && (
                 <motion.span
-                  layoutId="nav-dot"
-                  className="absolute -bottom-1.5 left-1/2 size-1 -translate-x-1/2 rounded-full bg-accent"
+                  layoutId="nav-underline"
+                  className="absolute -bottom-1.5 inset-x-0 h-[2px] rounded-full grad-line"
                   transition={{ type: "spring", stiffness: 350, damping: 28 }}
                 />
               )}
@@ -139,8 +142,9 @@ export function Navbar() {
 
         <div className="flex items-center gap-3">
           <a
+            ref={ctaRef}
             href="#contact"
-            className="hidden rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white transition-transform duration-150 hover:-translate-y-0.5 sm:block"
+            className="magnetic-btn hidden rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white transition-transform duration-150 hover:-translate-y-0.5 sm:block"
           >
             Get a Quote
           </a>

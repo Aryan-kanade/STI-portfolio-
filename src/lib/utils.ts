@@ -1,5 +1,3 @@
-import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
 import { useEffect, useRef, useState, useCallback, type RefObject } from "react"
 
 /**
@@ -47,10 +45,6 @@ export function useCountUp(
   }, [target, decimals, duration, delay])
 
   return { display, ref }
-}
-
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
 }
 
 /**

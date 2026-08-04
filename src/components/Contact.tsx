@@ -40,6 +40,9 @@ function FloatingInput({
 }) {
   const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null)
   const active = value.length > 0
+  const id = `contact-${name}`
+  const hintId = `${id}-hint`
+  const invalid = required && value.length > 0 && value.trim().length === 0
 
   const shared =
     "peer w-full rounded-lg border border-line bg-bg px-3.5 pt-5 pb-2 text-sm text-ink transition-colors duration-150 focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
@@ -50,17 +53,21 @@ function FloatingInput({
         {isTextarea ? (
           <textarea
             ref={inputRef as React.RefObject<HTMLTextAreaElement>}
+            id={id}
             name={name}
             required={required}
             rows={rows}
             value={value}
             onChange={(e) => onChange(e.target.value)}
             placeholder={placeholder || " "}
+            aria-describedby={hintId}
+            aria-invalid={invalid || undefined}
             className={`${shared} resize-y`}
           />
         ) : (
           <input
             ref={inputRef as React.RefObject<HTMLInputElement>}
+            id={id}
             name={name}
             type={type}
             required={required}
@@ -68,6 +75,8 @@ function FloatingInput({
             onChange={(e) => onChange(e.target.value)}
             placeholder=" "
             autoComplete={autoComplete}
+            aria-describedby={hintId}
+            aria-invalid={invalid || undefined}
             className={shared}
           />
         )}
@@ -77,11 +86,13 @@ function FloatingInput({
               ? "top-1.5 text-[10px] font-semibold tracking-wide text-accent uppercase"
               : "top-1/2 -translate-y-1/2 text-sm text-mut/60 peer-focus:top-1.5 peer-focus:-translate-y-0 peer-focus:text-[10px] peer-focus:font-semibold peer-focus:tracking-wide peer-focus:text-accent peer-focus:uppercase"
           }${isTextarea && !active ? " !top-3.5 !translate-y-0" : ""}`}
+          aria-hidden
         >
           {label}
           {required && <span className="text-accent"> *</span>}
         </span>
       </div>
+      <span id={hintId} className="sr-only">{label} field</span>
     </label>
   )
 }

@@ -6,6 +6,7 @@ import { ScrollProgress } from "./components/ScrollProgress"
 import { JsonLd } from "./components/JsonLd"
 import { Hero } from "./components/Hero"
 import { Projects } from "./components/Projects"
+import { StatsBar } from "./components/StatsBar"
 import { Capabilities } from "./components/Capabilities"
 import { Contact } from "./components/Contact"
 import { Footer } from "./components/Footer"
@@ -19,7 +20,7 @@ const LazyPhilosophy = lazy(() => import("./components/Philosophy").then((m) => 
 const LazyFounder = lazy(() => import("./components/Founder").then((m) => ({ default: m.Founder })))
 const LazyFaq = lazy(() => import("./components/Faq").then((m) => ({ default: m.Faq })))
 const LazyTestimonials = lazy(() => import("./components/Testimonials").then((m) => ({ default: m.Testimonials })))
-const LazyCTABand = lazy(() => import("./components/CTABand").then((m) => ({ default: m.CTABand })))
+const LazyCTABand = lazy(() => import("./components/CtaBand").then((m) => ({ default: m.CtaBand })))
 
 /** Minimal Suspense fallback that preserves section height to prevent layout shift. */
 function SectionSkeleton() {
@@ -71,6 +72,7 @@ export default function App() {
       <main id="main">
         <Hero />
         <Projects />
+        <StatsBar />
         <Capabilities />
         <Suspense fallback={<SectionSkeleton />}>
           <LazyBuildAnimation />

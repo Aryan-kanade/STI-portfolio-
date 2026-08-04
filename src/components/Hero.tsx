@@ -67,6 +67,7 @@ export function Hero() {
           muted
           loop
           playsInline
+          poster="/og-image.png"
           preload="metadata"
           // @ts-expect-error fetchPriority is valid HTML but missing from current React types
           fetchPriority="high"
@@ -92,6 +93,13 @@ export function Hero() {
 
       <HeroParticles />
 
+      {/* Floating gradient orbs */}
+      <div className="absolute inset-0 -z-[1] overflow-hidden" aria-hidden>
+        <span className="gradient-orb orb-drift-1 w-[180px] h-[180px] sm:w-[260px] sm:h-[260px] md:w-[340px] md:h-[340px] lg:w-[420px] lg:h-[420px] bg-copper/25 -top-20 -right-20" />
+        <span className="gradient-orb orb-drift-2 w-[140px] h-[140px] sm:w-[220px] sm:h-[220px] md:w-[280px] md:h-[280px] lg:w-[340px] lg:h-[340px] bg-accent/20 bottom-1/4 -left-16" />
+        <span className="gradient-orb orb-drift-3 w-[120px] h-[120px] sm:w-[180px] sm:h-[180px] md:w-[220px] md:h-[220px] lg:w-[260px] lg:h-[260px] bg-amber/20 top-1/3 right-1/4" />
+      </div>
+
       <motion.div
         variants={container}
         initial="hidden"
@@ -105,7 +113,7 @@ export function Hero() {
           </motion.div>
 
           <motion.p variants={item} className="mb-4 font-mono text-sm text-mut">
-            Hi, I'm <span className="text-ink font-medium">{HERO.name}</span> —
+            <span className="text-ink font-medium">{HERO.name}</span> —
           </motion.p>
 
           <motion.h1
@@ -125,7 +133,7 @@ export function Hero() {
           </motion.h1>
 
           <motion.p variants={item} className="mt-6 max-w-xl text-lg leading-relaxed text-mut">
-            Founder-led engineering for growing businesses
+            Engineering for growing businesses
             <br />
             building{" "}
             <span className="inline-block font-medium text-ink">

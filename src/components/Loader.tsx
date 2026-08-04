@@ -34,15 +34,34 @@ function LoaderParticles() {
 
 /**
  * Branded intro reveal — kept brief.
- * No forced multi-second delay; it dismisses as soon as the brand mark has
- * settled so it never blocks first content paint or accessibility.
+ * Waits for the main bundle to be ready before dismissing, but caps at 1.5 s
+ * so it never blocks first content paint or accessibility.
  */
 export function Loader() {
   const [done, setDone] = useState(false)
 
   useEffect(() => {
-    const t = setTimeout(() => setDone(true), 750)
-    return () => clearTimeout(t)
+    // If document is already complete (SPA navigations), dismiss quickly
+    if (document.readyState === "complete") {
+      const t = setTimeout(() => setDone(true), 400)
+      return () => clearTimeout(t)
+    }
+
+    const onReady = () => {
+      const t = setTimeout(() => setDone(true), 300)
+      return () => clearTimeout(t)
+    }
+
+    // Cap at 1.5 s regardless of load state
+    const cap = setTimeout(() => {
+      setDone(true)
+    }, 1500)
+
+    window.addEventListener("load", onReady)
+    return () => {
+      window.removeEventListener("load", onReady)
+      clearTimeout(cap)
+    }
   }, [])
 
   return (

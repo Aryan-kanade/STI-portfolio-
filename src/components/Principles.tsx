@@ -13,7 +13,7 @@ export function Principles() {
           kicker="Engineering Principles"
           title={
             <>
-              How I think about <GradientShimmer gradient={BRAND_GRADIENT} baseColor="var(--color-copper)" duration={2} className="font-display font-bold">software</GradientShimmer>
+              How we think about <GradientShimmer gradient={BRAND_GRADIENT} baseColor="var(--color-copper)" duration={2} className="font-display font-bold">software</GradientShimmer>
             </>
           }
         />

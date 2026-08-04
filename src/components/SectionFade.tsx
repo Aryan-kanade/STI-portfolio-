@@ -3,7 +3,7 @@ export function SectionFade({ direction = "down", color = "var(--color-bg)" }: {
   return (
     <div
       aria-hidden
-      className={`relative h-16 w-full ${direction === "up" ? "bg-gradient-to-t" : "bg-gradient-to-b"}`}
+      className="relative h-16 w-full"
       style={{
         backgroundImage: `linear-gradient(${direction === "up" ? "to top" : "to bottom"}, transparent, ${color})`,
       }}

@@ -1,10 +1,12 @@
 import { motion } from "framer-motion"
-import { Plus } from "@phosphor-icons/react"
+import { Plus, Coin, ChatCircle, Wrench, Globe, ArrowClockwise, ShieldCheck, type Icon } from "@phosphor-icons/react"
 import { useState } from "react"
 import { FAQ } from "../lib/data"
 import { SectionHeading } from "./Shared"
 import { GradientShimmer, BRAND_GRADIENT } from "./GradientShimmer"
 import { SectionFade } from "./SectionFade"
+
+const FAQ_ICONS: Icon[] = [Coin, ChatCircle, Wrench, Globe, ArrowClockwise, ShieldCheck]
 
 export function Faq() {
   const [open, setOpen] = useState<number | null>(0)
@@ -33,10 +35,13 @@ export function Faq() {
                     aria-controls={`faq-panel-${i}`}
                     className="flex w-full items-center justify-between gap-4 py-5 pl-5 text-left transition-colors duration-200 hover:bg-raise/40"
                   >
-                {open === i && (
-                  <span className="shrink-0 w-0.5 self-stretch rounded-full bg-accent" aria-hidden />
-                )}
-                <span className="font-display text-base font-semibold sm:text-lg">{f.q}</span>
+                <span className="flex items-center gap-3 min-w-0">
+                  {open === i && (
+                    <span className="shrink-0 w-0.5 self-stretch rounded-full bg-accent" aria-hidden />
+                  )}
+                  {(() => { const Ic = FAQ_ICONS[i % FAQ_ICONS.length]; return <Ic size={18} weight="duotone" className={`shrink-0 ${open === i ? "text-accent" : "text-mut/60"}`} /> })()}
+                  <span className="font-display text-base font-semibold sm:text-lg min-w-0">{f.q}</span>
+                </span>
                 <motion.span animate={{ rotate: open === i ? 45 : 0 }} transition={{ duration: 0.2 }} className="shrink-0 text-mut">
                   <Plus size={18} weight="bold" />
                 </motion.span>

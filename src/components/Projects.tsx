@@ -1,5 +1,6 @@
-import { ArrowRight } from "@phosphor-icons/react"
-import { motion } from "framer-motion"
+import { ArrowRight, CaretDown, Lightbulb, Target } from "@phosphor-icons/react"
+import { useState } from "react"
+import { motion, AnimatePresence } from "framer-motion"
 import { PROJECTS, CONTACT } from "../lib/data"
 import { SectionHeading, Reveal } from "./Shared"
 import { GradientShimmer, BRAND_GRADIENT } from "./GradientShimmer"
@@ -67,8 +68,10 @@ export function Projects() {
                 className="group flex h-full flex-col overflow-hidden"
               >
                 {/* Preview — compact, fills the top */}
-                <motion.div variants={cardItem} className="border-b border-line bg-bg/40 p-3">
-                  <ProjectPreview index={i} />
+                <motion.div variants={cardItem} className="relative overflow-hidden border-b border-line bg-bg/40 p-3">
+                  <div className="transition-transform duration-500 group-hover:scale-105">
+                    <ProjectPreview index={i} />
+                  </div>
                 </motion.div>
 
                 {/* Body */}
@@ -125,13 +128,15 @@ export function Projects() {
                   </motion.ul>
 
                   <motion.div variants={cardItem} className="mt-auto pt-4">
+                    {/* Expandable problem/approach details */}
+                    <ProjectDetails project={p} />
                     <a
                       href={CONTACT.whatsapp}
                       target="_blank"
                       rel="noreferrer"
                       className="group/link inline-flex items-center gap-1.5 text-xs font-semibold text-accent"
                     >
-                      View Case Study
+                      Discuss This Project
                       <ArrowRight size={13} weight="bold" className="transition-transform group-hover/link:translate-x-0.5" />
                     </a>
                   </motion.div>
@@ -143,5 +148,57 @@ export function Projects() {
         </div>
       </div>
     </section>
+  )
+}
+
+/** Expandable problem/approach details for a project card. */
+function ProjectDetails({ project }: { project: (typeof PROJECTS)[number] }) {
+  const [open, setOpen] = useState(false)
+  if (!project.problem && !project.approach) return null
+
+  return (
+    <div className="mb-3">
+      <button
+        onClick={() => setOpen((o) => !o)}
+        className="inline-flex items-center gap-1.5 text-[11px] font-medium text-mut transition-colors hover:text-ink"
+        aria-expanded={open}
+      >
+        <CaretDown size={12} weight="bold" className={`shrink-0 transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
+        {open ? "Hide details" : "See how"}
+      </button>
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            key="details"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            className="overflow-hidden"
+          >
+            <div className="mt-2 space-y-2">
+              {project.problem && (
+                <div className="flex gap-2 rounded-lg border border-line bg-bg-2/60 p-2.5">
+                  <Target size={14} weight="duotone" className="mt-0.5 shrink-0 text-accent" aria-hidden />
+                  <div>
+                    <p className="text-[10px] font-semibold uppercase tracking-wide text-accent">Problem</p>
+                    <p className="mt-0.5 text-xs leading-relaxed text-mut">{project.problem}</p>
+                  </div>
+                </div>
+              )}
+              {project.approach && (
+                <div className="flex gap-2 rounded-lg border border-line bg-bg-2/60 p-2.5">
+                  <Lightbulb size={14} weight="duotone" className="mt-0.5 shrink-0 text-amber" aria-hidden />
+                  <div>
+                    <p className="text-[10px] font-semibold uppercase tracking-wide text-amber">Approach</p>
+                    <p className="mt-0.5 text-xs leading-relaxed text-mut">{project.approach}</p>
+                  </div>
+                </div>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   )
 }

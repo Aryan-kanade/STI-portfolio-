@@ -9,7 +9,7 @@ const STRUCTURED_DATA = {
       "@id": "https://shivaswarajya.com/#business",
       name: "Shivaswarajya Techno Innovation",
       description:
-        "Founder-led software engineering — custom software, mobile apps, AI automation & IoT that turn manual operations into reliable digital systems.",
+        "Software engineering — custom software, mobile apps, AI automation & IoT that turn manual operations into reliable digital systems.",
       url: "https://shivaswarajya.com",
       logo: "https://shivaswarajya.com/logo.png",
       telephone: CONTACT.phone,

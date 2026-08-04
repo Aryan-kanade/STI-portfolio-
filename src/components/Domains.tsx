@@ -20,7 +20,7 @@ export function Domains() {
         <SectionHeading
           num="04"
           kicker="Industry Domains"
-          title={<>Sectors I <span className="text-accent">serve</span></>}
+          title={<>Sectors we <span className="text-accent">serve</span></>}
         />
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4" role="list">
           {DOMAINS.map((d, i) => {

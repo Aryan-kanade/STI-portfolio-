@@ -35,7 +35,7 @@ export function Philosophy() {
                   <span className="h-px w-12 bg-gradient-to-l from-transparent to-accent/40" aria-hidden />
                 </p>
                 <h2 className="font-display text-xl leading-snug font-bold tracking-tight sm:text-2xl md:text-3xl">
-                  <GradientShimmer gradient={BRAND_GRADIENT} baseColor="var(--color-copper)" duration={2} className="font-display font-medium">{FOUNDER.quote}</GradientShimmer>
+                  <GradientShimmer gradient={BRAND_GRADIENT} baseColor="var(--color-copper)" duration={2} className="font-display font-medium">Good software should reduce friction, make decisions clearer, and continue working when the business grows.</GradientShimmer>
                 </h2>
                 <p className="mt-4 text-mut">
                   — {FOUNDER.name}, {FOUNDER.role}

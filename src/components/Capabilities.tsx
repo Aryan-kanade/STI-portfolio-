@@ -24,7 +24,7 @@ export function Capabilities() {
           kicker="Capabilities"
           title={
             <>
-              What I <GradientShimmer gradient={BRAND_GRADIENT} baseColor="var(--color-copper)" duration={2} className="font-display font-bold">build</GradientShimmer>
+              What we <GradientShimmer gradient={BRAND_GRADIENT} baseColor="var(--color-copper)" duration={2} className="font-display font-bold">build</GradientShimmer>
             </>
           }
           sub="Six disciplines, one standard — systems that keep working when your business grows."
@@ -64,7 +64,7 @@ export function Capabilities() {
                     ))}
                   </ul>
 
-                  {/* bottom accent bar that fills on hover */}
+                  {/* bottom accent bar — fills on hover */}
                   <span
                     className="grad-line absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 transition-transform duration-300 group-hover:scale-x-100"
                     aria-hidden
@@ -78,12 +78,12 @@ export function Capabilities() {
 
         {/* Tech stack folded in */}
         <Reveal className="mt-8">
-          <p className="mb-4 font-mono text-[10px] tracking-[0.25em] text-mut uppercase">// Stack I work with</p>
+          <p className="mb-4 font-mono text-[10px] tracking-[0.25em] text-mut uppercase">// Stack we work with</p>
           <ul className="flex flex-wrap items-center gap-x-3 gap-y-2.5">
             {TECH_STACK.map((t, i) => (
               <li key={t} className="flex items-center gap-3">
                 {i > 0 && <span className="size-1 rounded-full bg-accent/60" aria-hidden />}
-                <span className="rounded-md border border-line px-3 py-1.5 font-mono text-xs text-mut transition-colors hover:border-accent/40 hover:text-ink">
+                <span className="rounded-md border border-line px-3 py-1.5 font-mono text-xs text-mut transition-all duration-200 hover:-translate-y-0.5 hover:shadow-sm hover:border-accent/40 hover:text-ink">
                   {t}
                 </span>
               </li>
