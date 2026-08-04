@@ -1,7 +1,31 @@
+import { useState } from "react"
+import { motion } from "framer-motion"
 import { Check } from "@phosphor-icons/react"
 import { FOUNDER } from "../lib/data"
 import { SectionHeading, Reveal } from "./Shared"
 import { GradientShimmer, BRAND_GRADIENT } from "./GradientShimmer"
+
+/** Founder portrait with shimmer skeleton while loading */
+function FounderImage() {
+  const [loaded, setLoaded] = useState(false)
+  return (
+    <div className="relative size-full bg-bg-2">
+      {!loaded && <div className="absolute inset-0 animate-pulse rounded-full bg-bg-2" />}
+      <picture>
+        <source srcSet="/founder.webp" type="image/webp" />
+        <img
+          src="/founder.png"
+          alt={FOUNDER.name}
+          className="size-full object-cover transition-opacity duration-500"
+          style={{ opacity: loaded ? 1 : 0 }}
+          onLoad={() => setLoaded(true)}
+          loading="lazy"
+          decoding="async"
+        />
+      </picture>
+    </div>
+  )
+}
 
 export function Founder() {
   return (
@@ -25,19 +49,7 @@ export function Founder() {
             <div className="relative">
               <div className="rounded-full p-[1.5px] grad-line">
                 <div className="size-44 overflow-hidden rounded-full border-4 border-bg sm:size-48">
-                  <picture>
-                    <source srcSet="/founder.webp" type="image/webp" />
-                    <img
-                      src="/founder.png"
-                      alt={`${FOUNDER.name}, ${FOUNDER.role}`}
-                      className="size-full object-cover object-top"
-                      style={{ objectPosition: "60% 28%" }}
-                      width={852}
-                      height={1238}
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  </picture>
+                  <FounderImage />
                 </div>
               </div>
             </div>
@@ -53,13 +65,13 @@ export function Founder() {
               <p className="mt-3 text-sm leading-relaxed text-mut">{FOUNDER.bio}</p>
             </Reveal>
 
-            {/* Highlights — compact chips */}
+            {/* Highlights */}
             <Reveal delay={0.08}>
               <div className="flex flex-wrap gap-2">
                 {FOUNDER.highlights.map((h) => (
                   <span
                     key={h.title}
-                    className="inline-flex items-center gap-1.5 rounded-full border border-line bg-glass px-3 py-1.5 text-xs font-medium"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-line bg-glass px-3 py-1.5 text-xs font-medium transition-colors hover:border-accent/50"
                   >
                     <Check size={12} weight="bold" className="shrink-0 text-accent" />
                     {h.title}

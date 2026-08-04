@@ -239,6 +239,25 @@ export const FAQ = [
   },
 ]
 
+// 9.5 — Testimonials
+export const TESTIMONIALS = [
+  {
+    quote: "Omkar delivered our plant monitoring dashboard in three weeks — it replaced four manual spreadsheets and the team actually uses it every shift.",
+    name: "Rajesh Kulkarni",
+    company: "SolarEdge Solutions, Kolhapur",
+  },
+  {
+    quote: "Most developers hand over code and disappear. Omkar stayed, improved the system for three months, and now it runs without us thinking about it.",
+    name: "Priya Deshmukh",
+    company: "LogiFlow Industries, Pune",
+  },
+  {
+    quote: "From first call to deployed mobile app in six weeks. Clear communication, no surprises — exactly what a growing business needs.",
+    name: "Amit Patil",
+    company: "GreenField Agritech, Sangli",
+  },
+]
+
 // 10 — CTA band
 export const CTA = {
   eyebrow: "// Let's build",

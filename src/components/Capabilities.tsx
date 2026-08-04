@@ -34,11 +34,14 @@ export function Capabilities() {
             const Icon = ICONS[s.icon]
             return (
               <Reveal key={s.title} delay={(i % 3) * 0.06}>
-                <GlowCard className="flex h-full flex-col rounded-xl border border-line bg-bg-2/60 transition-all duration-300 hover:border-accent/50 hover:shadow-glow">
+                <GlowCard className="flex h-full flex-col rounded-xl border border-line bg-bg-2/60 transition-all duration-300 hover:border-accent/50 hover:shadow-glow" aria-label={`${s.title} — ${s.desc}`}>
                 <article className="group relative flex h-full flex-col overflow-hidden p-4">
                   {/* top row: icon tile + arrow */}
                   <div className="flex items-center justify-between">
-                    <div className="grid size-8 place-items-center rounded-lg bg-accent/10 text-accent transition-colors duration-300 group-hover:bg-accent/20">
+                    <div
+                      className="anim-float grid size-8 place-items-center rounded-lg bg-accent/10 text-accent transition-[background-color,transform] duration-300 group-hover:bg-accent/20 group-hover:scale-110"
+                      style={{ animationDelay: `${i * 0.4}s` }}
+                    >
                       <Icon size={15} weight="duotone" />
                     </div>
                     <ArrowUpRight

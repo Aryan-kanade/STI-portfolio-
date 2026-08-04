@@ -163,13 +163,6 @@ section#work {
   will-change: transform;
 }
 
-/* ── Section divider ── */
-.section-divider {
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--color-line), var(--color-accent), var(--color-line), transparent);
-  opacity: 0.5;
-}
-
 /* ── Floating particles ── */
 .particle {
   position: absolute;

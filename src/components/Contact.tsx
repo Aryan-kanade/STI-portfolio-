@@ -5,6 +5,7 @@ import { CONTACT } from "../lib/data"
 import { RippleButton } from "@/components/ui/RippleButton"
 import { SectionHeading, Reveal } from "./Shared"
 import { GradientShimmer, BRAND_GRADIENT } from "./GradientShimmer"
+import { useMagnetic } from "../lib/utils"
 
 const FIELDS = [
   { name: "name", label: "Name", type: "text", required: true },
@@ -88,7 +89,9 @@ function FloatingInput({
 export function Contact() {
   const [form, setForm] = useState({ name: "", email: "", company: "", phone: "", details: "" })
   const [submitted, setSubmitted] = useState(false)
-  const submitTimer = useRef<ReturnType<typeof setTimeout>>()
+  const submitTimer = useRef<ReturnType<typeof setTimeout>>(undefined)
+  const magneticRef = useRef<HTMLDivElement>(null)
+  useMagnetic(magneticRef, 0.25)
 
   function update(name: string, value: string) {
     setForm((f) => ({ ...f, [name]: value }))
@@ -123,7 +126,7 @@ export function Contact() {
     <section id="contact" className="py-16 sm:py-20">
       <div className="mx-auto max-w-5xl px-5">
         <SectionHeading
-          num="09"
+          num="10"
           kicker="Contact"
           title={
             <>
@@ -191,14 +194,16 @@ export function Contact() {
                   />
 
                   <div className="flex flex-wrap items-center gap-3">
-                    <RippleButton
-                      type="submit"
-                      rippleColor="rgba(245, 185, 69, 0.4)"
-                      className="group inline-flex items-center gap-2 rounded-lg bg-accent px-5 py-2.5 text-sm font-medium text-white transition-all duration-150 hover:-translate-y-0.5 hover:shadow-glow"
-                    >
-                      Send via Email
-                      <ArrowRight size={15} weight="bold" className="transition-transform group-hover:translate-x-0.5" />
-                    </RippleButton>
+                    <div ref={magneticRef} className="magnetic-btn">
+                      <RippleButton
+                        type="submit"
+                        rippleColor="rgba(245, 185, 69, 0.4)"
+                        className="group inline-flex items-center gap-2 rounded-lg bg-accent px-5 py-2.5 text-sm font-medium text-white transition-all duration-150 hover:-translate-y-0.5 hover:shadow-glow"
+                      >
+                        Send via Email
+                        <ArrowRight size={15} weight="bold" className="transition-transform group-hover:translate-x-0.5" />
+                      </RippleButton>
+                    </div>
                     <a
                       href={CONTACT.whatsapp}
                       target="_blank"

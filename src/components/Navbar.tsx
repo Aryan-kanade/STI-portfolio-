@@ -11,6 +11,7 @@ export function Navbar() {
   const [open, setOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
   const firstLinkRef = useRef<HTMLAnchorElement>(null)
+  const toggleRef = useRef<HTMLButtonElement>(null)
 
   const [active, setActive] = useState("")
   // Blur intensity: increases as user scrolls deeper (max 20px blur)
@@ -42,11 +43,31 @@ export function Navbar() {
     return () => observer.disconnect()
   }, [])
 
-  // Close + return focus on ESC; basic focus handling for the mobile menu
+  // Close + return focus on ESC; focus trap within the mobile menu
   useEffect(() => {
     if (!open) return
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false)
+      if (e.key === "Escape") {
+        setOpen(false)
+        toggleRef.current?.focus()
+        return
+      }
+      // Focus trap: cycle through focusable elements inside the menu
+      if (e.key === "Tab" && menuRef.current) {
+        const focusable = menuRef.current.querySelectorAll<HTMLElement>(
+          'a[href], button, [tabindex]:not([tabindex="-1"])',
+        )
+        if (!focusable.length) return
+        const first = focusable[0]
+        const last = focusable[focusable.length - 1]
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault()
+          last.focus()
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault()
+          first.focus()
+        }
+      }
     }
     document.addEventListener("keydown", onKey)
     firstLinkRef.current?.focus()
@@ -103,6 +124,7 @@ export function Navbar() {
             Get a Quote
           </a>
           <button
+            ref={toggleRef}
             className="grid size-9 place-items-center rounded-lg border border-line md:hidden"
             aria-label="Toggle menu"
             aria-expanded={open}

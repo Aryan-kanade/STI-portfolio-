@@ -35,7 +35,7 @@ export function Projects() {
         <div className="mt-12 grid auto-rows-fr gap-5 md:grid-cols-2 lg:grid-cols-3">
           {PROJECTS.map((p, i) => (
             <Reveal key={p.name} delay={(i % 3) * 0.08} className="h-full">
-              <GlowCard className="card-tilt flex h-full flex-col rounded-2xl border border-line bg-bg-2/40 shadow-card backdrop-blur-sm transition-all duration-300 hover:bg-accent/20 hover:border-accent/60 hover:shadow-glow">
+              <GlowCard className="card-tilt flex h-full flex-col rounded-2xl border border-line bg-bg-2/40 shadow-card backdrop-blur-sm transition-all duration-300 hover:bg-accent/20 hover:border-accent/60 hover:shadow-glow" aria-label={`${p.name} — ${p.headline}`}>
               <motion.article
                 variants={cardInner}
                 initial="hidden"

@@ -1,9 +1,11 @@
+import { useRef } from "react"
 import { motion, type Variants } from "framer-motion"
 import { ArrowRight, WhatsappLogo, ClockCountdown, ShieldCheck, Code } from "@phosphor-icons/react"
 import { CTA } from "../lib/data"
 import { Reveal } from "./Shared"
 import { GradientShimmer, BRAND_GRADIENT } from "./GradientShimmer"
 import { RippleButton } from "./ui/RippleButton"
+import { useMagnetic } from "../lib/utils"
 
 const item: Variants = {
   hidden: { opacity: 0, y: 16 },
@@ -17,6 +19,9 @@ const TRUST = [
 ]
 
 export function CTABand() {
+  const magneticRef = useRef<HTMLDivElement>(null)
+  useMagnetic(magneticRef, 0.25)
+
   return (
     <section className="px-5 py-14">
       <Reveal>
@@ -62,16 +67,18 @@ export function CTABand() {
 
           {/* CTAs */}
           <motion.div variants={item} className="mt-9 flex flex-wrap items-center justify-center gap-4">
-            <RippleButton
-              rippleColor="rgba(255, 255, 255, 0.3)"
-              className="group inline-flex items-center gap-2 rounded-lg bg-accent px-8 py-4 text-[15px] font-medium text-white transition-all duration-150 hover:-translate-y-0.5 hover:shadow-glow"
-              onClick={() => {
-                document.getElementById(CTA.primaryCta.href.slice(1))?.scrollIntoView({ behavior: "smooth" })
-              }}
-            >
-              {CTA.primaryCta.label}
-              <ArrowRight size={16} weight="bold" className="transition-transform group-hover:translate-x-0.5" />
-            </RippleButton>
+            <div ref={magneticRef} className="magnetic-btn">
+              <RippleButton
+                rippleColor="rgba(255, 255, 255, 0.3)"
+                className="group inline-flex items-center gap-2 rounded-lg bg-accent px-8 py-4 text-[15px] font-medium text-white transition-all duration-150 hover:-translate-y-0.5 hover:shadow-glow"
+                onClick={() => {
+                  document.getElementById(CTA.primaryCta.href.slice(1))?.scrollIntoView({ behavior: "smooth" })
+                }}
+              >
+                {CTA.primaryCta.label}
+                <ArrowRight size={16} weight="bold" className="transition-transform group-hover:translate-x-0.5" />
+              </RippleButton>
+            </div>
             <a
               href={CTA.secondaryCta.href}
               target="_blank"

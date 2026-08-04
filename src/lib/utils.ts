@@ -1,6 +1,6 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
-import { useEffect, useRef, type RefObject } from "react"
+import { useEffect, useRef, useState, useCallback, type RefObject } from "react"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -46,4 +46,46 @@ export function useMagnetic<T extends HTMLElement = HTMLElement>(
       cancelAnimationFrame(rafId.current)
     }
   }, [ref, strength])
+}
+
+/**
+ * Typewriter effect hook — cycles through an array of phrases,
+ * typing and deleting one character at a time with a blinking cursor.
+ */
+export function useTypewriter(
+  phrases: string[],
+  { typeSpeed = 60, deleteSpeed = 30, pauseMs = 2000 }: { typeSpeed?: number; deleteSpeed?: number; pauseMs?: number } = {},
+) {
+  const [display, setDisplay] = useState("")
+  const [phraseIdx, setPhraseIdx] = useState(0)
+  const [deleting, setDeleting] = useState(false)
+
+  const tick = useCallback(() => {
+    const phrase = phrases[phraseIdx]
+    if (!deleting) {
+      // Typing
+      setDisplay(phrase.slice(0, display.length + 1))
+      if (display.length + 1 >= phrase.length) {
+        // Pause at end, then start deleting
+        setTimeout(() => setDeleting(true), pauseMs)
+        return
+      }
+    } else {
+      // Deleting
+      setDisplay(phrase.slice(0, display.length - 1))
+      if (display.length <= 1) {
+        setDeleting(false)
+        setPhraseIdx((i) => (i + 1) % phrases.length)
+        return
+      }
+    }
+  }, [deleting, display, phraseIdx, phrases, pauseMs])
+
+  useEffect(() => {
+    const speed = deleting ? deleteSpeed : typeSpeed
+    const id = setTimeout(tick, speed)
+    return () => clearTimeout(id)
+  }, [tick, deleting, deleteSpeed, typeSpeed])
+
+  return display
 }

@@ -1,8 +1,7 @@
-import { useRef, type ReactNode, useCallback, useState } from "react"
+import { useRef, type ReactNode, useCallback, useState, type HTMLAttributes } from "react"
 
-interface GlowCardProps {
+interface GlowCardProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode
-  className?: string
 }
 
 /** Max rotation angle (degrees) for the 3D tilt. */
@@ -13,7 +12,7 @@ const TILT_MAX = 6
  * When the `card-tilt` class is present in `className`, a 3D perspective tilt
  * is also applied based on cursor position.
  */
-export function GlowCard({ children, className = "" }: GlowCardProps) {
+export function GlowCard({ children, className = "", ...rest }: GlowCardProps) {
   const ref = useRef<HTMLDivElement>(null)
   const innerRef = useRef<HTMLDivElement>(null)
   const [position, setPosition] = useState({ x: 0, y: 0 })
@@ -54,6 +53,7 @@ export function GlowCard({ children, className = "" }: GlowCardProps) {
       onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      {...rest}
     >
       {/* Radial glow that follows the cursor */}
       <div

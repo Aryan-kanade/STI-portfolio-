@@ -1,5 +1,6 @@
 import { Component, type ErrorInfo, type ReactNode } from "react"
 import { RippleButton } from "@/components/ui/RippleButton"
+import { CONTACT } from "../lib/data"
 
 interface Props {
   children: ReactNode
@@ -33,7 +34,7 @@ export class ErrorBoundary extends Component<Props, State> {
             </h1>
             <p className="mx-auto mt-3 max-w-sm text-sm text-mut">
               Try reloading. If it keeps happening, reach me on{" "}
-              <a className="text-accent underline underline-offset-2" href="https://wa.me/918956529972">
+              <a className="text-accent underline underline-offset-2" href={CONTACT.whatsapp} target="_blank" rel="noreferrer">
                 WhatsApp
               </a>
               .

@@ -1,10 +1,11 @@
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { LinkedinLogo, WhatsappLogo, EnvelopeSimple } from "@phosphor-icons/react"
+import { LinkedinLogo, WhatsappLogo, EnvelopeSimple, ArrowRight } from "@phosphor-icons/react"
 import type { Icon } from "@phosphor-icons/react"
 import { NAV, CONTACT } from "../lib/data"
 import { Logo } from "./Logo"
 import { Reveal } from "./Shared"
+import { RippleButton } from "./ui/RippleButton"
 
 const SOCIAL = [
   {
@@ -28,6 +29,8 @@ const SOCIAL = [
 ]
 
 export function Footer() {
+  const [email, setEmail] = useState("")
+
   return (
     <footer className="relative">
       <div className="mx-auto max-w-7xl px-5 py-14">
@@ -64,6 +67,35 @@ export function Footer() {
                 <a href={`mailto:${CONTACT.email}`} className="hover:text-ink">{CONTACT.email}</a>
               </p>
             </div>
+          </div>
+
+          {/* Stay connected */}
+          <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+            <p className="text-sm text-mut">Stay connected:</p>
+            <form
+              className="flex gap-2"
+              onSubmit={(e) => {
+                e.preventDefault()
+                if (!email) return
+                window.location.href = `mailto:${CONTACT.email}?subject=Let's%20stay%20connected&body=Hi%2C%20I'd%20like%20to%20stay%20updated%20on%20your%20work.%0A%0AEmail%3A%20${encodeURIComponent(email)}`
+              }}
+            >
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="your@email.com"
+                className="w-56 rounded-lg border border-line bg-bg px-3.5 py-2 text-sm text-ink placeholder:text-mut/50 transition-colors focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+              />
+              <RippleButton
+                type="submit"
+                rippleColor="rgba(245, 185, 69, 0.3)"
+                className="inline-flex items-center gap-1.5 rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white transition-all hover:-translate-y-0.5 hover:shadow-glow"
+              >
+                <ArrowRight size={14} weight="bold" />
+              </RippleButton>
+            </form>
           </div>
           <div className="mt-12 flex flex-col gap-2 border-t border-line pt-6 text-xs text-mut sm:flex-row sm:items-center sm:justify-between">
             <p>© {new Date().getFullYear()} Shivaswarajya Techno Innovation. All rights reserved.</p>

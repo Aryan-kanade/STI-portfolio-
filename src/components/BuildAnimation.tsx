@@ -1,7 +1,30 @@
+import { useState } from "react"
 import { METHODOLOGY } from "../lib/data"
 import { SectionHeading, Reveal } from "./Shared"
 import { GradientShimmer, BRAND_GRADIENT } from "./GradientShimmer"
 import { GlowCard } from "@/components/ui/spotlight-card"
+
+/** System engine diagram with shimmer skeleton while loading */
+function EngineImage() {
+  const [loaded, setLoaded] = useState(false)
+  return (
+    <div className="relative w-full rounded-lg bg-bg-2">
+      {!loaded && <div className="absolute inset-0 animate-pulse rounded-lg bg-bg-2" />}
+      <picture>
+        <source srcSet="/system-engine.webp" type="image/webp" />
+        <img
+          src="/system-engine.png"
+          alt="System Engine — four layers (Client, Service, Data, IoT) wired to one central engine, illustrating long-term ownership"
+          className="w-full rounded-lg transition-opacity duration-500"
+          style={{ opacity: loaded ? 1 : 0 }}
+          onLoad={() => setLoaded(true)}
+          loading="lazy"
+          decoding="async"
+        />
+      </picture>
+    </div>
+  )
+}
 
 export function BuildAnimation() {
   return (
@@ -22,16 +45,7 @@ export function BuildAnimation() {
           {/* The building object */}
           <Reveal className="order-2 lg:order-1">
             <GlowCard className="relative overflow-hidden rounded-2xl border border-line bg-bg-2/40 p-5 shadow-card sm:p-8">
-              <picture>
-                <source srcSet="/system-engine.webp" type="image/webp" />
-                <img
-                  src="/system-engine.png"
-                  alt="System Engine — four layers (Client, Service, Data, IoT) wired to one central engine, illustrating long-term ownership"
-                  className="w-full rounded-lg"
-                  loading="lazy"
-                  decoding="async"
-                />
-              </picture>
+              <EngineImage />
               <p className="mt-5 text-center font-mono text-[10px] tracking-widest text-mut uppercase">
                 // four layers · one engine · long-term ownership
               </p>

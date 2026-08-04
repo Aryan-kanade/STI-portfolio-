@@ -4,7 +4,7 @@ import { useRef } from "react"
 import { HERO } from "../lib/data"
 import { LogoMark } from "./Logo"
 import { GradientShimmer, BRAND_GRADIENT } from "./GradientShimmer"
-import { useMagnetic } from "../lib/utils"
+import { useMagnetic, useTypewriter } from "../lib/utils"
 
 const container: Variants = {
   hidden: {},
@@ -47,9 +47,12 @@ function HeroParticles() {
   )
 }
 
+const TYPO_PHRASES = ["custom software", "mobile apps", "AI & IoT systems", "digital operations"]
+
 export function Hero() {
   const ctaRef = useRef<HTMLAnchorElement>(null)
   useMagnetic(ctaRef, 0.25)
+  const typed = useTypewriter(TYPO_PHRASES)
 
   return (
     <section
@@ -60,6 +63,7 @@ export function Hero() {
       <div className="absolute inset-0 -z-10" aria-hidden>
         <video
           src="/videoHome.webm"
+          poster="/videoHome.jpg"
           className="absolute inset-0 size-full object-cover"
           autoPlay
           muted
@@ -118,10 +122,16 @@ export function Hero() {
           </motion.h1>
 
           <motion.p variants={item} className="mt-6 max-w-xl text-lg leading-relaxed text-mut">
-            {HERO.sub}
+            Founder-led engineering for growing businesses
+            <br />
+            building{" "}
+            <span className="inline-block font-medium text-ink">
+              {typed}
+              <span className="ml-0.5 inline-block w-[2px] animate-pulse bg-accent align-middle" aria-hidden>&nbsp;</span>
+            </span>
           </motion.p>
 
-          <motion.div variants={item} className="mt-10 flex flex-wrap items-center gap-4">
+          <motion.div variants={item} className="mt-6 flex flex-wrap items-center gap-4">
             <a
               ref={ctaRef}
               href={HERO.primaryCta.href}
@@ -141,7 +151,7 @@ export function Hero() {
             </a>
           </motion.div>
 
-          <motion.ul variants={item} className="mt-10 flex flex-wrap gap-x-6 gap-y-2">
+          <motion.ul variants={item} className="mt-6 flex flex-wrap gap-x-6 gap-y-2">
             {HERO.trust.map((t) => (
               <li key={t} className="flex items-center gap-2 text-sm text-mut">
                 <Check size={15} weight="bold" className="text-accent" />

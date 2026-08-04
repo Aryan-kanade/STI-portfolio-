@@ -1,4 +1,5 @@
-import { motion } from "framer-motion"
+import { useState } from "react"
+import { motion, AnimatePresence } from "framer-motion"
 
 const BRONZE = "#cd7f32"
 const AMBER = "#f5b945"
@@ -48,9 +49,10 @@ function BrowserChrome({ tag, live }: { tag: string; live?: string }) {
 }
 
 /* ---- 0 — EMS Energy Dashboard -------------------------------------------- */
-function EmsDashboard() {
-  const sites = ["Solar Array A", "Plant Floor 2", "Warehouse"]
-  const bars = [38, 52, 64, 49, 71, 60, 78, 66, 84, 72, 90, 80]
+function EmsDashboard({ variant = 0 }: { variant?: number }) {
+  const sites = variant === 1 ? ["Wind Farm B", "Cooling Unit 3", "Office Block"] : ["Solar Array A", "Plant Floor 2", "Warehouse"]
+  const bars = variant === 1 ? [55, 42, 73, 61, 85, 48, 92, 70, 58, 80, 65, 77] : [38, 52, 64, 49, 71, 60, 78, 66, 84, 72, 90, 80]
+  const kpis = variant === 1 ? ["3.1 MW", "−12%", "18", "WARN"] : ["2.4 MW", "−8%", "12", "OK"]
   return (
     <svg viewBox="0 0 620 320" fill="none" className="h-full w-full" role="img" aria-label="Energy monitoring dashboard UI">
       {defs("ems")}
@@ -61,7 +63,7 @@ function EmsDashboard() {
           <rect x={20 + i * 146} y={48} width="134" height="56" rx="10" fill="var(--color-glass)" stroke="var(--color-line)" />
           <rect x={32 + i * 146} y={60} width="54" height="8" rx="3" fill="var(--color-mut)" opacity="0.5" />
           <text x={32 + i * 146} y={92} fontSize="18" fontWeight="700" fill="var(--color-ink)" fontFamily="Space Grotesk, sans-serif">
-            {["2.4 MW", "−8%", "12", "OK"][i]}
+            {kpis[i]}
           </text>
         </g>
       ))}
@@ -101,14 +103,11 @@ function EmsDashboard() {
 }
 
 /* ---- 1 — Interstellar Automation Console --------------------------------- */
-function Console() {
-  const rows = [
-    ["#1042", "Order", "Paid", "#5ac28a"],
-    ["#1041", "Job", "In field", AMBER],
-    ["#1040", "Order", "Shipped", "#5ac28a"],
-    ["#1039", "Job", "Queued", "var(--color-mut)"],
-    ["#1038", "Order", "Refund", "#e06c5a"],
-  ]
+function Console({ variant = 0 }: { variant?: number }) {
+  const rows = variant === 1
+    ? [["#1088", "Return", "Received", AMBER], ["#1087", "Order", "Delivered", "#5ac28a"], ["#1086", "Job", "Complete", "#5ac28a"], ["#1085", "Order", "Pending", "var(--color-mut)"], ["#1084", "Job", "Cancelled", "#e06c5a"]]
+    : [["#1042", "Order", "Paid", "#5ac28a"], ["#1041", "Job", "In field", AMBER], ["#1040", "Order", "Shipped", "#5ac28a"], ["#1039", "Job", "Queued", "var(--color-mut)"], ["#1038", "Order", "Refund", "#e06c5a"]]
+  const stats = variant === 1 ? ["2,041", "456", "97%"] : ["1,284", "312", "98%"]
   return (
     <svg viewBox="0 0 620 320" fill="none" className="h-full w-full" role="img" aria-label="Automation admin console UI">
       {defs("csl")}
@@ -147,7 +146,7 @@ function Console() {
           <rect x={138 + i * 156} y={92} width="146" height="44" rx="8" fill="var(--color-glass)" stroke="var(--color-line)" />
           <rect x={150 + i * 156} y={102} width="44" height="6" rx="2" fill="var(--color-mut)" opacity="0.5" />
           <text x={150 + i * 156} y={126} fontSize="14" fontWeight="700" fill="var(--color-ink)" fontFamily="Space Grotesk, sans-serif">
-            {["1,284", "312", "98%"][i]}
+            {stats[i]}
           </text>
         </g>
       ))}
@@ -174,12 +173,10 @@ function Console() {
 }
 
 /* ---- 2 — Field Team Mobile App ------------------------------------------- */
-function MobileApp() {
-  const tasks = [
-    ["Replace inverter unit", "In progress", AMBER],
-    ["Panel cleaning — Row C", "Done", "#5ac28a"],
-    ["Voltage inspection", "Assigned", BRONZE],
-  ]
+function MobileApp({ variant = 0 }: { variant?: number }) {
+  const tasks = variant === 1
+    ? [["Generator check — B7", "Done", "#5ac28a"], ["Thermal imaging — Roof", "In progress", AMBER], ["Cable inspection", "Assigned", BRONZE]]
+    : [["Replace inverter unit", "In progress", AMBER], ["Panel cleaning — Row C", "Done", "#5ac28a"], ["Voltage inspection", "Assigned", BRONZE]]
   return (
     <svg viewBox="0 0 620 320" fill="none" className="h-full w-full" role="img" aria-label="Field team mobile app UI">
       {defs("mob")}
@@ -235,26 +232,53 @@ function MobileApp() {
 }
 
 const VIEWS = [EmsDashboard, Console, MobileApp]
+const VARIANTS_COUNT = 2 // each preview has 2 data variants
 
 export function ProjectPreview({ index }: { index: number }) {
+  const [variant, setVariant] = useState(0)
   const View = VIEWS[index] ?? EmsDashboard
+
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.97 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true, margin: "-40px" }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-      className="group/preview relative shadow-card overflow-hidden rounded-xl"
-    >
-      <View />
-      {/* Scan-line sweep on hover */}
+    <div>
       <div
-        className="pointer-events-none absolute inset-0 -translate-y-full opacity-0 transition-[opacity,transform] duration-500 group-hover/preview:translate-y-0 group-hover/preview:opacity-100"
-        aria-hidden
+        className="group/preview relative cursor-pointer shadow-card overflow-hidden rounded-xl"
+        onClick={() => setVariant((v) => (v + 1) % VARIANTS_COUNT)}
+        role="button"
+        tabIndex={0}
+        aria-label={`Toggle preview variant ${variant + 1} of ${VARIANTS_COUNT}`}
+        onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") setVariant((v) => (v + 1) % VARIANTS_COUNT) }}
       >
-        <div className="h-full w-full bg-gradient-to-b from-accent/8 via-accent/4 to-transparent" />
-        <div className="absolute inset-x-0 top-0 h-px grad-line opacity-70" />
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={variant}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <View variant={variant} />
+          </motion.div>
+        </AnimatePresence>
+        {/* Scan-line sweep on hover */}
+        <div
+          className="pointer-events-none absolute inset-0 -translate-y-full opacity-0 transition-[opacity,transform] duration-500 group-hover/preview:translate-y-0 group-hover/preview:opacity-100"
+          aria-hidden
+        >
+          <div className="h-full w-full bg-gradient-to-b from-accent/8 via-accent/4 to-transparent" />
+          <div className="absolute inset-x-0 top-0 h-px grad-line opacity-70" />
+        </div>
       </div>
-    </motion.div>
+      {/* Dot indicators */}
+      <div className="mt-2 flex justify-center gap-1.5">
+        {Array.from({ length: VARIANTS_COUNT }, (_, i) => (
+          <button
+            key={i}
+            onClick={() => setVariant(i)}
+            className={`size-1.5 rounded-full transition-all duration-200 ${i === variant ? "bg-accent scale-125" : "bg-mut/30 hover:bg-mut/50"}`}
+            aria-label={`Show variant ${i + 1}`}
+          />
+        ))}
+      </div>
+    </div>
   )
 }
