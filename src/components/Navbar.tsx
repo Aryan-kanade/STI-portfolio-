@@ -22,25 +22,37 @@ export function Navbar() {
     setBlurIntensity(Math.min(y / 300, 1) * 20)
   })
 
-  // Track which section is currently in view
+  // Track which section is currently in view (scroll-based for lazy-section support)
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            setActive(entry.target.id)
+    let ticking = false
+    const update = () => {
+      const mid = window.innerHeight * 0.35
+      let closest = ""
+      let closestDist = Infinity
+      for (const id of SECTION_IDS) {
+        const el = document.getElementById(id)
+        if (!el) continue
+        const top = el.getBoundingClientRect().top
+        if (top <= mid) {
+          const dist = mid - top
+          if (dist < closestDist) {
+            closestDist = dist
+            closest = id
           }
         }
-      },
-      { rootMargin: "-40% 0px -55% 0px", threshold: 0 },
-    )
-
-    for (const id of SECTION_IDS) {
-      const el = document.getElementById(id)
-      if (el) observer.observe(el)
+      }
+      if (closest) setActive(closest)
+      ticking = false
     }
-
-    return () => observer.disconnect()
+    const onScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(update)
+        ticking = true
+      }
+    }
+    window.addEventListener("scroll", onScroll, { passive: true })
+    update()
+    return () => window.removeEventListener("scroll", onScroll)
   }, [])
 
   // Lock body scroll when mobile menu is open; restore on close

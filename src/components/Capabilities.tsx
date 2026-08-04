@@ -17,7 +17,7 @@ const ICONS: Record<string, ComponentType<IconProps>> = {
 
 export function Capabilities() {
   return (
-    <section id="capabilities" className="py-12">
+    <section id="capabilities" className="py-8">
       <div className="mx-auto max-w-7xl px-5">
         <SectionHeading
           num="02"

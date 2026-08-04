@@ -28,7 +28,7 @@ function EngineImage() {
 
 export function BuildAnimation() {
   return (
-    <section id="process" className="py-16 sm:py-20">
+    <section id="process" className="py-10 sm:py-14">
       <div className="mx-auto max-w-7xl px-5">
         <SectionHeading
           num="03"

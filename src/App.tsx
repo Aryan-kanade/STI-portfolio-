@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react"
+import { lazy, Suspense, useEffect, useRef } from "react"
 import { MotionConfig } from "framer-motion"
 import { Loader } from "./components/Loader"
 import { Navbar } from "./components/Navbar"
@@ -26,7 +26,41 @@ function SectionSkeleton() {
   return <div className="min-h-[24rem]" aria-hidden />
 }
 
+/**
+ * Programmatically scrolls to the element matching the current URL hash.
+ * Retries up to `retries` times (100ms apart) so that lazy-loaded sections
+ * have time to resolve before we give up.
+ */
+function scrollToHash(hash: string, retries = 20) {
+  if (!hash) return
+  const id = hash.replace(/^#/, "")
+  const el = document.getElementById(id)
+  if (el) {
+    el.scrollIntoView({ behavior: "smooth", block: "start" })
+  } else if (retries > 0) {
+    setTimeout(() => scrollToHash(hash, retries - 1), 100)
+  }
+}
+
+/** Hook that listens for hash changes and scrolls to the target section. */
+function useHashScroll() {
+  const initial = useRef(true)
+
+  useEffect(() => {
+    // On first mount, scroll to any hash already in the URL (e.g. direct link)
+    if (initial.current) {
+      initial.current = false
+      scrollToHash(location.hash)
+    }
+
+    const onHashChange = () => scrollToHash(location.hash)
+    window.addEventListener("hashchange", onHashChange)
+    return () => window.removeEventListener("hashchange", onHashChange)
+  }, [])
+}
+
 export default function App() {
+  useHashScroll()
   return (
     <MotionConfig reducedMotion="user">
       <a href="#main" className="skip-link">Skip to content</a>
@@ -39,10 +73,10 @@ export default function App() {
         <Projects />
         <Capabilities />
         <Suspense fallback={<SectionSkeleton />}>
-          <LazyDomains />
+          <LazyBuildAnimation />
         </Suspense>
         <Suspense fallback={<SectionSkeleton />}>
-          <LazyBuildAnimation />
+          <LazyDomains />
         </Suspense>
         <Suspense fallback={<SectionSkeleton />}>
           <LazyPrinciples />

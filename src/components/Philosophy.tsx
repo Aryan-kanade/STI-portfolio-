@@ -2,12 +2,10 @@ import { FOUNDER } from "../lib/data"
 import { Reveal } from "./Shared"
 import { GradientShimmer, BRAND_GRADIENT } from "./GradientShimmer"
 import { GlowCard } from "@/components/ui/spotlight-card"
-import { SectionFade } from "./SectionFade"
 
 export function Philosophy() {
   return (
-    <section className="bg-bg-2/60 py-16 sm:py-20">
-      <SectionFade direction="up" />
+    <section className="bg-bg-2/60 py-10 sm:py-14">
       <div className="mx-auto max-w-5xl px-5">
         <Reveal>
           <GlowCard className="relative overflow-hidden rounded-2xl border border-line bg-bg-2/60 py-12 sm:py-16">
@@ -52,7 +50,6 @@ export function Philosophy() {
           </GlowCard>
         </Reveal>
       </div>
-      <SectionFade direction="down" />
     </section>
   )
 }

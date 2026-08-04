@@ -10,7 +10,7 @@ export function Faq() {
   const [open, setOpen] = useState<number | null>(0)
 
   return (
-    <section className="bg-bg-2/60 py-16 sm:py-20">
+    <section className="bg-bg-2/60 py-8 sm:py-10">
       <SectionFade direction="up" color="var(--color-bg)" />
       <div className="mx-auto max-w-4xl px-5">
         <SectionHeading

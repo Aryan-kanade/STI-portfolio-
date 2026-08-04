@@ -16,7 +16,7 @@ export function Domains() {
   return (
     <section aria-label="Industry domains" className="bg-raise/30">
       <SectionFade direction="up" />
-      <div className="mx-auto max-w-7xl px-5 py-12 sm:py-14">
+      <div className="mx-auto max-w-7xl px-5 py-6 sm:py-8">
         <SectionHeading
           num="04"
           kicker="Industry Domains"

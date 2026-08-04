@@ -125,8 +125,8 @@ export const CAPABILITIES = [
 
 // 5 — Domains (compact strip)
 export const DOMAINS = [
-  { icon: "lightning", title: "Energy Monitoring", desc: "Real-time EMS & operations dashboards" },
-  { icon: "map-pin", title: "Field Service", desc: "Mobile-first apps for remote teams" },
+  { icon: "lightning", title: "Green Energy & Clean Tech", desc: "Renewable energy monitoring, EMS & clean energy solutions" },
+  { icon: "map-pin", title: "IoT", desc: "Smart devices, sensors & connected systems" },
   { icon: "gear", title: "Business Automation", desc: "ERP, CRM & workflow software" },
   { icon: "storefront", title: "E-commerce & Admin", desc: "Storefronts with admin control" },
 ]
@@ -230,10 +230,6 @@ export const FAQ = [
     a: "Usually yes. I audit the existing code and infrastructure first, tell you honestly what's worth keeping, then extend or rebuild on that basis.",
   },
   {
-    q: "Who owns the code and the IP?",
-    a: "You do. On completion you receive the full source code and credentials. Nothing is locked behind me — I build for ownership, not for dependency.",
-  },
-  {
     q: "How is my business data kept secure?",
     a: "Least-privilege access, encrypted credentials, environment-separated config, and no real data in repos or logs. For sensitive engagements we start under an NDA.",
   },
@@ -262,7 +258,7 @@ export const TESTIMONIALS = [
 export const CTA = {
   eyebrow: "// Let's build",
   headline: "Got an operation that should be software by now?",
-  sub: "Tell me what you're running today and the outcome you want — I'll come back within one business day.",
+  sub: ["Tell me what you're running today and the outcome you want.", "I'll come back within one business day."] as const,
   primaryCta: { label: "Get a Quote", href: "#contact" },
   secondaryCta: { label: "Continue on WhatsApp", href: CONTACT.whatsapp },
 }

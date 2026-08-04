@@ -57,9 +57,8 @@ html {
   color-scheme: dark;
 }
 
-html,
 body {
-  overflow-x: clip;
+  overflow-x: hidden;
 }
 
 body {
@@ -87,7 +86,7 @@ section[id] {
 /* The "View selected work" CTA should land you deeper into the section —
    past the heading so the first case study is in view, not just the title. */
 section#work {
-  scroll-margin-top: -3rem;
+  scroll-margin-top: 1rem;
 }
 
 .skip-link {

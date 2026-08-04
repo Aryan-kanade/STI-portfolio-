@@ -96,7 +96,7 @@ export function Hero() {
         variants={container}
         initial="hidden"
         animate="show"
-        className="relative z-10 mx-auto w-full max-w-7xl px-5 pt-28 pb-24"
+        className="relative z-10 mx-auto w-full max-w-7xl px-5 pt-28 pb-16"
       >
         <div className="w-full lg:max-w-[55%] xl:max-w-[50%] flex flex-col justify-center">
           <motion.div variants={item} className="mb-6 flex items-center gap-3">

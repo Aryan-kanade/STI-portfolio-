@@ -42,7 +42,7 @@ const cardItem: import("framer-motion").Variants = {
 
 export function Projects() {
   return (
-    <section id="work" className="py-20 sm:py-24">
+    <section id="work" className="py-12 sm:py-16">
       <div className="mx-auto max-w-7xl px-5">
         <SectionHeading
           num="01"

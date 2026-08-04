@@ -29,7 +29,7 @@ function FounderImage() {
 
 export function Founder() {
   return (
-    <section id="about" className="py-16">
+    <section id="about" className="py-12">
       <div className="mx-auto max-w-7xl px-5">
         <div className="-mb-10">
         <SectionHeading

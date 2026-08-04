@@ -6,7 +6,7 @@ import { GlowCard } from "@/components/ui/spotlight-card"
 
 export function Principles() {
   return (
-    <section className="py-16 sm:py-20">
+    <section className="py-8 sm:py-10">
       <div className="mx-auto max-w-7xl px-5">
         <SectionHeading
           num="05"

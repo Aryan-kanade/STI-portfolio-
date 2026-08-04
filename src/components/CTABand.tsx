@@ -23,7 +23,7 @@ export function CTABand() {
   useMagnetic(magneticRef, 0.25)
 
   return (
-    <section className="px-5 py-14">
+    <section className="px-5 py-10">
       <Reveal>
         <motion.div
           variants={{ show: { transition: { staggerChildren: 0.1, delayChildren: 0.1 } } }}
@@ -52,7 +52,9 @@ export function CTABand() {
           </motion.h2>
 
           <motion.p variants={item} className="mx-auto mt-5 max-w-lg text-mut">
-            {CTA.sub}
+            {CTA.sub[0]}
+            <br />
+            {CTA.sub[1]}
           </motion.p>
 
           {/* Trust signals */}
