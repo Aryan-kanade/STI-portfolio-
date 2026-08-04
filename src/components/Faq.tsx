@@ -1,0 +1,52 @@
+import { motion } from "framer-motion"
+import { Plus } from "@phosphor-icons/react"
+import { useState } from "react"
+import { FAQ } from "../lib/data"
+import { SectionHeading } from "./Shared"
+import { GradientShimmer, BRAND_GRADIENT } from "./GradientShimmer"
+
+export function Faq() {
+  const [open, setOpen] = useState<number | null>(0)
+
+  return (
+    <section className="py-16 sm:py-20">
+      <div className="mx-auto max-w-4xl px-5">
+        <SectionHeading
+          num="08"
+          kicker="FAQ"
+          title={
+            <>
+              A few <GradientShimmer gradient={BRAND_GRADIENT} baseColor="var(--color-copper)" duration={2} className="font-display font-bold">honest answers</GradientShimmer>
+            </>
+          }
+          sub="Before you write in — the questions most clients ask."
+        />
+        <div className="divide-y divide-line rounded-xl border border-line bg-bg-2/60">
+          {FAQ.map((f, i) => (
+            <div key={f.q} className={`transition-colors duration-200 ${open === i ? "bg-raise/60" : ""}`}>
+              <button
+                onClick={() => setOpen(open === i ? null : i)}
+                aria-expanded={open === i}
+                className="flex w-full items-center justify-between gap-4 py-5 pl-5 text-left transition-colors duration-200 hover:bg-raise/40"
+              >
+                {open === i && (
+                  <span className="shrink-0 w-0.5 self-stretch rounded-full bg-accent" aria-hidden />
+                )}
+                <span className="font-display text-base font-semibold sm:text-lg">{f.q}</span>
+                <motion.span animate={{ rotate: open === i ? 45 : 0 }} transition={{ duration: 0.2 }} className="shrink-0 text-mut">
+                  <Plus size={18} weight="bold" />
+                </motion.span>
+              </button>
+              {/* Grid-based height animation — smoother than height: auto */}
+              <div className={`faq-grid${open === i ? " open" : ""}`}>
+                <div>
+                  <p className="max-w-2xl pb-5 pl-5 leading-relaxed text-mut">{f.a}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
