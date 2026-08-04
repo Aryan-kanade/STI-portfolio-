@@ -43,6 +43,15 @@ export function Navbar() {
     return () => observer.disconnect()
   }, [])
 
+  // Lock body scroll when mobile menu is open; restore on close
+  useEffect(() => {
+    if (open) {
+      const prev = document.body.style.overflow
+      document.body.style.overflow = "hidden"
+      return () => { document.body.style.overflow = prev }
+    }
+  }, [open])
+
   // Close + return focus on ESC; focus trap within the mobile menu
   useEffect(() => {
     if (!open) return
@@ -125,7 +134,7 @@ export function Navbar() {
           </a>
           <button
             ref={toggleRef}
-            className="grid size-9 place-items-center rounded-lg border border-line md:hidden"
+            className="grid size-11 place-items-center rounded-lg border border-line md:hidden"
             aria-label="Toggle menu"
             aria-expanded={open}
             onClick={() => setOpen((o) => !o)}

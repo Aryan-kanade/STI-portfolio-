@@ -1,4 +1,5 @@
 import { useEffect } from "react"
+import { CONTACT, FAQ } from "../lib/data"
 
 const STRUCTURED_DATA = {
   "@context": "https://schema.org",
@@ -11,7 +12,7 @@ const STRUCTURED_DATA = {
         "Founder-led software engineering — custom software, mobile apps, AI automation & IoT that turn manual operations into reliable digital systems.",
       url: "https://shivaswarajya.com",
       logo: "https://shivaswarajya.com/logo.png",
-      telephone: "+91 95525 21122",
+      telephone: CONTACT.phone,
       email: "contact@shivaswarajya.com",
       address: {
         "@type": "PostalAddress",
@@ -48,6 +49,18 @@ const STRUCTURED_DATA = {
       url: "https://shivaswarajya.com",
       name: "Shivaswarajya Techno Innovation",
       publisher: { "@id": "https://shivaswarajya.com/#business" },
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://shivaswarajya.com/#faq",
+      mainEntity: FAQ.map((f) => ({
+        "@type": "Question",
+        name: f.q,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: f.a,
+        },
+      })),
     },
   ],
 } as const

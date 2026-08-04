@@ -140,10 +140,11 @@ section#work {
   position: fixed;
   top: 0;
   left: 0;
-  height: 2px;
+  height: 3px;
   z-index: 200;
   transform-origin: left;
   pointer-events: none;
+  box-shadow: 0 0 8px var(--color-accent);
 }
 
 /* ── 3D card tilt ── */
@@ -249,4 +250,65 @@ section#work {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* ── Custom scrollbar (Webkit / Firefox) ── */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-accent);
+  border-radius: 4px;
+  border: 2px solid var(--color-bg);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-amber);
+}
+
+/* Firefox */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-accent) var(--color-bg);
+}
+
+/* ── Print stylesheet ── */
+@media print {
+  /* Switch to light theme */
+  html { color-scheme: light; scroll-behavior: auto; }
+  body {
+    background: #fff !important;
+    color: #111 !important;
+    font-size: 12pt;
+    -webkit-font-smoothing: auto;
+  }
+
+  /* Hide non-content elements */
+  video, audio, canvas, .particle,
+  .scroll-progress, .skip-link,
+  nav, footer, [aria-label="Back to top"] {
+    display: none !important;
+  }
+
+  /* Ensure text is readable */
+  .text-mut { color: #555 !important; }
+  .text-accent { color: var(--color-accent); print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  .grad-text, .grad-line { color: var(--color-accent) !important; background: none !important; -webkit-text-fill-color: initial !important; }
+
+  /* Single column, full width */
+  section { page-break-inside: avoid; }
+  .grid { grid-template-columns: 1fr !important; }
+
+  /* Remove decorative borders/shadows */
+  .glass { backdrop-filter: none; -webkit-backdrop-filter: none; border-color: #ddd !important; background: #fff !important; }
+  .shadow-card, .shadow-glow { box-shadow: none !important; }
+
+  /* Ensure links show URLs */
+  a[href]::after { content: " (" attr(href) ")"; font-size: 9pt; color: #555; }
 }

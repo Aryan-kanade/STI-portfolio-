@@ -62,16 +62,19 @@ export function Hero() {
       {/* Background: looping video */}
       <div className="absolute inset-0 -z-10" aria-hidden>
         <video
-          src="/videoHome.webm"
-          poster="/videoHome.jpg"
           className="absolute inset-0 size-full object-cover"
           autoPlay
           muted
           loop
           playsInline
           preload="metadata"
+          // @ts-expect-error fetchPriority is valid HTML but missing from current React types
+          fetchPriority="high"
           style={{ opacity: 0.85 }}
-        />
+        >
+          <source src="/videoHome.webm" type="video/webm" />
+          <source src="/videoHome.mp4" type="video/mp4" />
+        </video>
       </div>
 
       {/* Theme-aware scrim overlay */}

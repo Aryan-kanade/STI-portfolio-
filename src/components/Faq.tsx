@@ -4,12 +4,14 @@ import { useState } from "react"
 import { FAQ } from "../lib/data"
 import { SectionHeading } from "./Shared"
 import { GradientShimmer, BRAND_GRADIENT } from "./GradientShimmer"
+import { SectionFade } from "./SectionFade"
 
 export function Faq() {
   const [open, setOpen] = useState<number | null>(0)
 
   return (
-    <section className="py-16 sm:py-20">
+    <section className="bg-bg-2/60 py-16 sm:py-20">
+      <SectionFade direction="up" color="var(--color-bg)" />
       <div className="mx-auto max-w-4xl px-5">
         <SectionHeading
           num="08"
@@ -24,11 +26,13 @@ export function Faq() {
         <div className="divide-y divide-line rounded-xl border border-line bg-bg-2/60">
           {FAQ.map((f, i) => (
             <div key={f.q} className={`transition-colors duration-200 ${open === i ? "bg-raise/60" : ""}`}>
-              <button
-                onClick={() => setOpen(open === i ? null : i)}
-                aria-expanded={open === i}
-                className="flex w-full items-center justify-between gap-4 py-5 pl-5 text-left transition-colors duration-200 hover:bg-raise/40"
-              >
+                  <button
+                    id={`faq-btn-${i}`}
+                    onClick={() => setOpen(open === i ? null : i)}
+                    aria-expanded={open === i}
+                    aria-controls={`faq-panel-${i}`}
+                    className="flex w-full items-center justify-between gap-4 py-5 pl-5 text-left transition-colors duration-200 hover:bg-raise/40"
+                  >
                 {open === i && (
                   <span className="shrink-0 w-0.5 self-stretch rounded-full bg-accent" aria-hidden />
                 )}
@@ -38,15 +42,21 @@ export function Faq() {
                 </motion.span>
               </button>
               {/* Grid-based height animation — smoother than height: auto */}
-              <div className={`faq-grid${open === i ? " open" : ""}`}>
-                <div>
-                  <p className="max-w-2xl pb-5 pl-5 leading-relaxed text-mut">{f.a}</p>
-                </div>
-              </div>
+                  <div
+                    id={`faq-panel-${i}`}
+                    role="region"
+                    aria-labelledby={`faq-btn-${i}`}
+                    className={`faq-grid${open === i ? " open" : ""}`}
+                  >
+                    <div>
+                      <p className="max-w-2xl pb-5 pl-5 leading-relaxed text-mut">{f.a}</p>
+                    </div>
+                  </div>
             </div>
           ))}
         </div>
       </div>
+      <SectionFade direction="down" color="var(--color-bg)" />
     </section>
   )
 }

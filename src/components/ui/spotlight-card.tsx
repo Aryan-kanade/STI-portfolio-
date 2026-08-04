@@ -1,4 +1,4 @@
-import { useRef, type ReactNode, useCallback, useState, type HTMLAttributes } from "react"
+import { useRef, type ReactNode, useCallback, useState, useEffect, type HTMLAttributes } from "react"
 
 interface GlowCardProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode
@@ -17,7 +17,22 @@ export function GlowCard({ children, className = "", ...rest }: GlowCardProps) {
   const innerRef = useRef<HTMLDivElement>(null)
   const [position, setPosition] = useState({ x: 0, y: 0 })
   const [opacity, setOpacity] = useState(0)
+  const [isTouch, setIsTouch] = useState(false)
   const hasTilt = className.includes("card-tilt")
+
+  // Detect touch-primary devices where mousemove never fires
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const onFirstMove = () => setIsTouch(false)
+    const onFirstTouch = () => { setIsTouch(true); el.removeEventListener("touchstart", onFirstTouch) }
+    el.addEventListener("mousemove", onFirstMove, { once: true })
+    el.addEventListener("touchstart", onFirstTouch, { once: true })
+    return () => {
+      el.removeEventListener("mousemove", onFirstMove)
+      el.removeEventListener("touchstart", onFirstTouch)
+    }
+  }, [])
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     const el = ref.current
@@ -37,7 +52,9 @@ export function GlowCard({ children, className = "", ...rest }: GlowCardProps) {
     }
   }, [hasTilt])
 
-  const handleMouseEnter = useCallback(() => setOpacity(1), [])
+  const handleMouseEnter = useCallback(() => {
+    if (!isTouch) setOpacity(1)
+  }, [isTouch])
 
   const handleMouseLeave = useCallback(() => {
     setOpacity(0)
@@ -55,12 +72,14 @@ export function GlowCard({ children, className = "", ...rest }: GlowCardProps) {
       onMouseLeave={handleMouseLeave}
       {...rest}
     >
-      {/* Radial glow that follows the cursor */}
+      {/* Radial glow — static for touch, dynamic for mouse */}
       <div
         className="pointer-events-none absolute -inset-px z-0 rounded-[inherit] transition-opacity duration-300"
         style={{
-          opacity,
-          background: `radial-gradient(600px circle at ${position.x}px ${position.y}px, var(--color-glow), transparent 40%)`,
+          opacity: isTouch ? 0.7 : opacity,
+          background: isTouch
+            ? "radial-gradient(circle at 50% 0%, var(--color-glow), transparent 70%)"
+            : `radial-gradient(600px circle at ${position.x}px ${position.y}px, var(--color-glow), transparent 40%)`,
         }}
         aria-hidden
       />

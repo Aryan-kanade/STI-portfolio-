@@ -2,6 +2,53 @@ import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 import { useEffect, useRef, useState, useCallback, type RefObject } from "react"
 
+/**
+ * Animates a numeric value from 0 to a target when the element enters the viewport.
+ * Returns the current display value and a ref to attach to the container element.
+ * Handles integers and decimals up to `decimals` places.
+ */
+export function useCountUp(
+  target: number,
+  { decimals = 0, duration = 1200, delay = 0 }: { decimals?: number; duration?: number; delay?: number } = {},
+) {
+  const ref = useRef<HTMLElement>(null)
+  const [display, setDisplay] = useState("0")
+  const hasAnimated = useRef(false)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el || hasAnimated.current) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry?.isIntersecting || hasAnimated.current) return
+        hasAnimated.current = true
+        observer.disconnect()
+
+        setTimeout(() => {
+          const startTime = performance.now()
+          const animate = (now: number) => {
+            const elapsed = now - startTime
+            const progress = Math.min(elapsed / duration, 1)
+            // Ease-out cubic for natural deceleration
+            const eased = 1 - Math.pow(1 - progress, 3)
+            const current = eased * target
+            setDisplay(current.toFixed(decimals))
+            if (progress < 1) requestAnimationFrame(animate)
+          }
+          requestAnimationFrame(animate)
+        }, delay)
+      },
+      { threshold: 0.3 },
+    )
+
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [target, decimals, duration, delay])
+
+  return { display, ref }
+}
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }

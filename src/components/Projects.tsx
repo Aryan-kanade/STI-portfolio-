@@ -6,6 +6,29 @@ import { GradientShimmer, BRAND_GRADIENT } from "./GradientShimmer"
 import { ProjectPreview } from "./ProjectPreview"
 import { LogoMark } from "./Logo"
 import { GlowCard } from "@/components/ui/spotlight-card"
+import { useCountUp } from "../lib/utils"
+
+/** Parses a metric string like "−14%", "3.2x", "< 2s" and animates the numeric portion. */
+function MetricValue({ raw }: { raw: string }) {
+  const match = raw.match(/^(.*?)([\d.]+)(.*)$/)
+  const prefix = match?.[1] ?? raw
+  const numStr = match?.[2]
+  const suffix = match?.[3] ?? ""
+
+  const numericTarget = numStr ? parseFloat(numStr) : NaN
+  const decimals = numStr?.includes(".") ? (numStr.split(".")[1]?.length ?? 0) : 0
+  const { display, ref } = useCountUp(numericTarget, { decimals, duration: 1000 })
+
+  if (isNaN(numericTarget)) {
+    return <>{raw}</>
+  }
+
+  return (
+    <span ref={ref as React.RefObject<HTMLSpanElement>}>
+      {prefix}{display}{suffix}
+    </span>
+  )
+}
 
 const cardInner: import("framer-motion").Variants = {
   hidden: {},
@@ -79,7 +102,7 @@ export function Projects() {
                         <span key={m.label} className="flex items-baseline gap-1.5">
                           {idx > 0 && <span className="text-mut/40">·</span>}
                           <span className="font-display text-base font-bold tracking-tight text-accent">
-                            {m.value}
+                            <MetricValue raw={m.value} />
                           </span>
                           <span className="font-mono text-[9px] tracking-wider text-mut uppercase">
                             {m.label}

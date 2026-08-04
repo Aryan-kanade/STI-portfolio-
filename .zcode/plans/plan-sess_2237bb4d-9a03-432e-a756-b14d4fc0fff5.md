@@ -1,161 +1,145 @@
-# Shivaswarajya Portfolio — Next-Level Polish Plan
+# Shivaswarajya Portfolio — Comprehensive Next-Level Plan
 
-Based on deep analysis of every component, the portfolio is already strong. This plan targets **high-impact improvements** across 5 areas: data/content, visual design, interaction/UX, code quality, and deployment readiness.
-
----
-
-## Phase 1: Content & Data Enrichment
-
-### 1.1 Founder Section — Use Unused `highlights.body` Data
-**Problem:** `FOUNDER.highlights` in `data.ts` has rich `body` text for each highlight, but `Founder.tsx` only renders the `title` as a chip badge.
-**Fix:** On hover/click, expand each chip to reveal the `body` description below. Use a subtle expand animation (Framer Motion `AnimatePresence` + height transition). This adds credibility and depth without cluttering the layout.
-
-**Files:** `src/components/Founder.tsx`, `src/lib/data.ts` (no data changes needed)
-
-### 1.2 Add Client Testimonial / Social Proof Section
-**Problem:** No testimonials or client proof anywhere — the site is entirely self-described.
-**Fix:** Add a new `Testimonials` component between `CTABand` and `Contact` with 2-3 short quote cards (even placeholder/testimonial data for now). Each card has: quote text, client name, company, and a subtle glow border. Use `GlowCard` + staggered `Reveal`. Add `TESTIMONIALS` array to `data.ts`.
-
-**Files:** `src/components/Testimonials.tsx` (new), `src/lib/data.ts`, `src/App.tsx`
-
-### 1.3 Error Boundary — Fix Hardcoded WhatsApp Number
-**Problem:** `ErrorBoundary.tsx` has a hardcoded WhatsApp URL (`wa.me/918956529972`) that doesn't match `CONTACT.phone` (`+91 95525 21122`).
-**Fix:** Import `CONTACT` from data and use `CONTACT.whatsapp` in the error fallback link.
-
-**File:** `src/components/ErrorBoundary.tsx`
+All 18 items from the previous plan are complete. This new plan targets **remaining bugs, accessibility gaps, mobile UX issues, SEO holes, and visual polish** discovered from deep codebase audit.
 
 ---
 
-## Phase 2: Visual Design Enhancements
+## Phase 1: Critical Fixes (Bugs & Data Integrity)
 
-### 2.1 Hero — Add Typing Effect on Subtitle
-**Problem:** The hero subtitle ("Founder-led software engineering...") is static text. It's the most important real-estate on the site.
-**Fix:** Add a smooth typewriter effect that types out 2-3 rotating phrases (e.g., "custom software", "mobile apps", "AI & IoT systems") in the subtitle. Use a simple custom hook with `setInterval` + character-by-character reveal with a blinking cursor. Matches the engineering/terminal aesthetic already present in the SVG mockups.
+### 1.1 Fix JsonLd Phone Number Mismatch
+**Problem:** `JsonLd.tsx:14` has `telephone: "+91 95525 21122"` but `CONTACT.phone` in `data.ts` is `"+91 89565 29972"`. Search engines index conflicting data.
+**Fix:** Import `CONTACT` from data and use `CONTACT.phone` in the structured data object.
+**File:** `src/components/JsonLd.tsx`
 
-**Files:** `src/components/Hero.tsx`, `src/lib/utils.ts` (add `useTypewriter` hook)
+### 1.2 Add Safari/iOS MP4 Video Fallback
+**Problem:** Only `videoHome.webm` exists. Safari on macOS and all browsers on iOS require H.264 MP4 — they show a black/blank hero. This is a **broken experience for ~20% of visitors**.
+**Fix:** Add a `<source>` element for MP4 inside the `<video>` tag. Generate the MP4 (I'll provide FFmpeg instructions). Also add `type="video/mp4"` attribute.
+**File:** `src/components/Hero.tsx` + new `public/videoHome.mp4`
 
-### 2.2 Project Cards — Image Gallery / Multi-Preview
-**Problem:** Each project only shows one static SVG preview. Real case studies benefit from multiple angles.
-**Fix:** Add a subtle dot indicator (● ● ●) below each `ProjectPreview`. Clicking cycles through 2-3 variations of the same SVG (e.g., different data states for EmsDashboard, different screens for MobileApp). Uses a simple `useState` cycle with a crossfade transition (`AnimatePresence`).
+### 1.3 Fix Missing Video Poster Image
+**Problem:** Hero references `poster="/videoHome.jpg"` but no `videoHome.jpg` exists in public/. Causes a 404 request on every page load.
+**Fix:** Extract the first frame as a JPEG poster image. If not available, remove the `poster` attribute to eliminate the 404.
+**File:** `public/videoHome.jpg` (new) or `src/components/Hero.tsx`
 
-**Files:** `src/components/ProjectPreview.tsx`, `src/components/Projects.tsx`
-
-### 2.3 Capabilities — Add Icon Animations
-**Problem:** Capability card icons are static Phosphor icons with no animation.
-**Fix:** Add a subtle float animation on capability icons (alternate `anim-float` with staggered delays). On card hover, scale the icon slightly and shift the accent color. This makes the grid feel alive.
-
-**File:** `src/components/Capabilities.tsx`
-
-### 2.4 Footer — Add Newsletter / Stay Connected
-**Problem:** Footer has no call-to-action or way for visitors to stay engaged.
-**Fix:** Add a compact "Stay connected" input field (email) at the bottom of the footer before the copyright bar. Style it consistently with the contact form's floating label pattern. On submit, open mailto: (consistent with existing no-backend approach). Add a decorative grad-line above the footer for subtle section separation.
-
-**File:** `src/components/Footer.tsx`
-
----
-
-## Phase 3: Interaction & UX Upgrades
-
-### 3.1 Magnetic Effect — Apply to More CTA Buttons
-**Problem:** Only the Hero CTA has the magnetic cursor effect. CTABand and Contact submit buttons lack it.
-**Fix:** Apply `useMagnetic` to the CTABand primary button and the Contact form submit button. Reuse the existing `magnetic-btn` CSS class and `useMagnetic` hook — zero new code, just wiring.
-
-**Files:** `src/components/CTABand.tsx`, `src/components/Contact.tsx`
-
-### 3.2 Smooth Page-Section Background Transitions
-**Problem:** Background color changes between sections are abrupt (bg-bg → bg-raise/30 → bg-bg-2/60 → bg-bg).
-**Fix:** Add gradient fade overlays at section boundaries using a small reusable `<SectionFade direction="up|down" />` component. It renders a `h-24 bg-gradient-to-t from-next-bg to-transparent` div. Place at the top/bottom of sections with different backgrounds.
-
-**Files:** `src/components/SectionFade.tsx` (new), applied in `Domains.tsx`, `Philosophy.tsx`, `FAQ.tsx`
-
-### 3.3 Keyboard Navigation Enhancement
-**Problem:** Focus styles work but there's no visible focus trap in the mobile menu when open.
-**Fix:** Add a focus trap to the mobile nav using `useRef` + `keydown` listener. When open, Tab/Shift+Tab cycles within the menu; Escape closes it (already handled). This is an accessibility win.
-
+### 1.4 Add Body Scroll Lock for Mobile Menu
+**Problem:** When the hamburger menu opens, the page behind it can still scroll. This is a common mobile UX bug — user accidentally scrolls the page while trying to navigate the menu.
+**Fix:** Add a `useEffect` in Navbar that sets `document.body.style.overflow = 'hidden'` when `open` is true, and restores it on close/unmount.
 **File:** `src/components/Navbar.tsx`
 
-### 3.4 Add Loading Skeleton for Images
-**Problem:** `founder.webp` (45KB) and `system-engine.webp` (84KB) show blank space while loading.
-**Fix:** Add a CSS-only shimmer skeleton placeholder (`bg-bg-2 animate-pulse`) behind each `<img>`. The image overlays it once loaded using `onLoad` to toggle opacity. Zero JS overhead.
-
-**Files:** `src/components/Founder.tsx`, `src/components/BuildAnimation.tsx`
-
 ---
 
-## Phase 4: Performance & Code Quality
+## Phase 2: Accessibility & Compliance
 
-### 4.1 Lazy Load Below-the-Fold Sections
-**Problem:** All 11 sections render immediately. Components like `Faq`, `Philosophy`, `Founder`, `Testimonials` are below the fold but block initial render.
-**Fix:** Wrap below-the-fold components in `React.lazy()` + `Suspense` with a minimal fallback (empty div with section min-height to prevent layout shift). Target: `Domains`, `BuildAnimation`, `Principles`, `Philosophy`, `Founder`, `Faq`, `CTABand`.
+### 2.1 FAQ Accordion — Full ARIA Pattern
+**Problem:** FAQ buttons have `aria-expanded` but are missing `aria-controls` (pointing to the content panel ID). The content panels lack `id` and `role="region"`. Screen readers can't properly navigate the accordion.
+**Fix:** Add unique `id` to each answer panel, `aria-controls` on each button, and `role="region"` + `aria-labelledby` on each panel.
+**File:** `src/components/Faq.tsx`
 
-**File:** `src/App.tsx`
+### 2.2 Increase Touch Targets to ≥44px
+**Problem:** Two critical interactive elements are below the WCAG 44px minimum touch target:
+- Navbar hamburger toggle: `size-9` = 36px
+- Back-to-top button: `size-10` = 40px
+**Fix:** Increase to `size-11` (44px) for both. Adjust the hamburger lines to match. Keep the visual size the same but expand the clickable area with padding if needed.
+**Files:** `src/components/Navbar.tsx`, `src/components/BackToTop.tsx`
 
-### 4.2 Remove Dead CSS
-**Problem:** `.section-divider` class still exists in `index.css` even though no component uses it anymore.
-**Fix:** Remove the `.section-divider` rule from `index.css`. Also audit for any other unused custom classes.
-
+### 2.3 Custom Scrollbar Matching Dark Theme
+**Problem:** Default white scrollbar on a near-black site looks jarring, especially on Windows.
+**Fix:** Add Webkit scrollbar styles in `index.css` matching the accent color (`--color-accent`) with dark track. Add `scrollbar-width: thin` + `scrollbar-color` for Firefox.
 **File:** `src/index.css`
 
-### 4.3 Add Deployment Config Template
-**Problem:** No deployment configuration files exist for any hosting platform.
-**Fix:** Add a `_headers` file (works on Netlify, Cloudflare Pages) with caching rules: images/fonts cache 1 year, JS/CSS cache with content-hash (immutable), HTML no-cache. Also add a `vercel.json` with equivalent headers as an alternative.
-
-**Files:** `public/_headers` (new), `vercel.json` (new)
-
-### 4.4 Video Optimization
-**Problem:** `videoHome.webm` is 4.2 MB — the largest asset, and it's the first thing the user sees.
-**Fix:** Convert to a more compressed version (target ≤1.5 MB) by reducing resolution to 720p and lowering bitrate. Also add a poster frame (first-frame JPEG) as `poster` attribute on the `<video>` element so there's no black flash before the video loads.
-
-**Files:** `public/videoHome.webm`, `public/videoHome.jpg` (new poster), `src/components/Hero.tsx`
+### 2.4 Print Stylesheet
+**Problem:** No `@media print` styles. Printing shows the dark background (wastes ink), video, animations, and interactive elements.
+**Fix:** Add print styles that: switch to white bg / dark text, hide video/animations/nav/footer/back-to-top, show content in single column, add `print-color-adjust: exact` for accent elements.
+**File:** `src/index.css`
 
 ---
 
-## Phase 5: Micro-Polish
+## Phase 3: Visual & Interaction Polish
 
-### 5.1 GradientShimmer — Apply to More Headings
-**Problem:** `GradientShimmer` is only used on 4 headings (Hero, Projects, BuildAnimation, CTABand). Other sections have plain text headings.
-**Fix:** Apply `BRAND_GRADIENT` shimmer to the Founder and Contact section headings for visual consistency.
+### 3.1 Apply SectionFade to All Background-Transitioning Sections
+**Problem:** Only `Domains.tsx` uses `SectionFade`. Sections like `Philosophy`, `FAQ`, `CTABand`, `Founder` have different backgrounds but no smooth transition — creating hard visual lines.
+**Fix:** Wrap `SectionFade` at top/bottom of `Philosophy`, `FAQ`, and `Founder` sections that have `bg-raise/30` or `bg-bg-2/60` backgrounds.
+**Files:** `src/components/Philosophy.tsx`, `src/components/Faq.tsx`, `src/components/Founder.tsx`
 
-**Files:** `src/components/Founder.tsx`, `src/components/Contact.tsx`
+### 3.2 GlowCard — Add Subtle Static Gradient for Touch/No-Mouse
+**Problem:** The spotlight-card effect only activates on `mousemove`. Mobile and touch users see no glow at all — the cards look flat.
+**Fix:** In `spotlight-card.tsx`, add a default subtle radial gradient (`radial-gradient(circle at 50% 0%, var(--color-glow), transparent 70%)`) that shows when no mouse interaction has occurred. Hide it once mouse tracking begins.
+**File:** `src/components/ui/spotlight-card.tsx`
 
-### 5.2 Add `aria-label` to Interactive Cards
-**Problem:** GlowCard-wrapped elements don't have semantic roles. They look clickable but aren't to screen readers.
-**Fix:** Add `role="article"` to project cards, `role="listitem"` to capability/domain cards. Add descriptive `aria-label` where needed.
+### 3.3 Metrics Counter Animation
+**Problem:** Project metrics (e.g., "−14%", "< 2s", "3.2x") appear instantly with no emphasis. These are the most persuasive data points on the page.
+**Fix:** Create a `useCountUp` hook that animates numbers from 0 to their target value when scrolled into view (IntersectionObserver). Apply to metric values in `Projects.tsx`.
+**Files:** `src/lib/utils.ts` (new hook), `src/components/Projects.tsx`
 
-**Files:** `src/components/Projects.tsx`, `src/components/Capabilities.tsx`, `src/components/Domains.tsx`
+### 3.4 Enhanced Scroll Progress Bar
+**Problem:** The scroll progress bar is a flat 2px line with no gradient — nearly invisible against the dark background.
+**Fix:** Apply the brand gradient (`grad-line`) to the progress bar and increase height slightly to 3px. Add a subtle glow effect.
+**File:** `src/components/ScrollProgress.tsx`
 
-### 5.3 Prefetch Critical Assets
-**Problem:** Fonts are preloaded but the hero video starts downloading late.
-**Fix:** Add `<link rel="preload" as="video" href="/videoHome.webm">` to `index.html` head for faster hero video start.
+---
 
-**File:** `index.html`
+## Phase 4: SEO & Deployment Readiness
+
+### 4.1 Add robots.txt
+**Problem:** No `robots.txt` in public/. Search engines may waste crawl budget on non-existent paths.
+**Fix:** Create `public/robots.txt` allowing all crawlers, pointing sitemap to `shivaswarajya.com/sitemap.xml`.
+**File:** `public/robots.txt` (new)
+
+### 4.2 Add sitemap.xml
+**Problem:** No sitemap. Search engines rely on discovery alone.
+**Fix:** Create `public/sitemap.xml` with the single URL, lastmod, changefreq, and priority.
+**File:** `public/sitemap.xml` (new)
+
+### 4.3 Create OG Social Sharing Image
+**Problem:** Open Graph `og:image` points to `/logo.png` — likely too small (not 1200×630). Social shares on LinkedIn/Twitter will look cropped or blank.
+**Fix:** Create a 1200×630 branded OG image. Add as `public/og-image.png` and update `index.html` meta tags.
+**File:** `public/og-image.png` (new), `index.html`
+
+### 4.4 Add 404.html Fallback
+**Problem:** No custom 404 page. On Netlify/Vercel, direct URL access or typos show a generic server page instead of the portfolio.
+**Fix:** Create a minimal `public/404.html` that auto-redirects to the main page after 3 seconds, styled consistently with the brand.
+**File:** `public/404.html` (new)
+
+---
+
+## Phase 5: Code Quality & Micro-Improvements
+
+### 5.1 Video Optimization Guidance
+**Problem:** `videoHome.webm` is 4.2MB — the largest asset. Slow connections take significant time to load the hero.
+**Fix:** Provide FFmpeg commands to compress to ≤1.5MB at 720p. Add `fetchpriority="high"` to the video element for priority loading.
+**Files:** Video asset + `src/components/Hero.tsx`
+
+### 5.2 FAQ Page Structured Data
+**Problem:** FAQ content exists but isn't exposed as `FAQPage` schema. Missing a free SEO opportunity.
+**Fix:** Add a `FAQPage` entry to the `@graph` array in `JsonLd.tsx` mapping each FAQ question/answer.
+**File:** `src/components/JsonLd.tsx`
 
 ---
 
 ## Execution Order
-1. **Phase 4.2** — Remove dead CSS (30 seconds)
-2. **Phase 1.3** — Fix ErrorBoundary hardcoded number (30 seconds)
-3. **Phase 3.3** — Add keyboard focus trap to mobile nav (quick a11y win)
-4. **Phase 3.4** — Image loading skeletons (visual polish)
-5. **Phase 3.1** — Apply magnetic effect to more CTAs
-6. **Phase 2.3** — Capability icon animations
-7. **Phase 5.1** — More GradientShimmer headings
-8. **Phase 5.3** — Prefetch hero video
-9. **Phase 1.1** — Founder highlights expandable
-10. **Phase 2.1** — Hero typewriter effect
-11. **Phase 3.2** — Section background fade transitions
-12. **Phase 2.2** — Project card multi-preview
-13. **Phase 2.4** — Footer stay-connected input
-14. **Phase 1.2** — Testimonials section
-15. **Phase 4.1** — Lazy load below-fold sections
-16. **Phase 4.3** — Deployment config templates
-17. **Phase 4.4** — Video optimization
-18. **Phase 5.2** — ARIA labels on cards
+1. **1.1** — Fix JsonLd phone (30s)
+2. **1.3** — Fix/remove video poster reference (30s)
+3. **1.4** — Body scroll lock for mobile menu (2min)
+4. **2.1** — FAQ ARIA pattern (2min)
+5. **2.2** — Touch targets ≥44px (2min)
+6. **1.2** — Safari/iOS MP4 video fallback (add source tag + guidance)
+7. **2.3** — Custom scrollbar (2min)
+8. **2.4** — Print stylesheet (3min)
+9. **3.1** — SectionFade on more sections (3min)
+10. **3.2** — GlowCard static gradient for touch (3min)
+11. **3.4** — Enhanced scroll progress bar (2min)
+12. **3.3** — Metrics counter animation (5min)
+13. **4.1** — robots.txt (1min)
+14. **4.2** — sitemap.xml (1min)
+15. **4.4** — 404.html (3min)
+16. **5.2** — FAQPage structured data (2min)
+17. **4.3** — OG image creation guidance (1min code + image creation)
+18. **5.1** — Video optimization guidance (1min code + FFmpeg commands)
 
 ## Files Changed Estimate
-- **Modified:** ~12 files (Hero, Projects, ProjectPreview, Capabilities, Domains, Philosophy, FAQ, Founder, CTABand, Contact, Navbar, Footer, ErrorBoundary, App.tsx, index.css, index.html)
-- **New:** 4 files (Testimonials.tsx, SectionFade.tsx, public/_headers, vercel.json)
-- **Assets:** 1 new poster image, 1 optimized video
+- **Modified:** 10 files (JsonLd, Hero, Navbar, Faq, BackToTop, spotlight-card, Projects, ScrollProgress, Philosophy, Founder, index.css, index.html)
+- **New:** 5 files (robots.txt, sitemap.xml, 404.html, og-image.png, videoHome.mp4)
+- **Assets:** 1 OG image, 1 MP4 video (FFmpeg guidance provided)
 
 ## Build Verification
 - Run `tsc -b && vite build` after each phase to catch regressions early.
