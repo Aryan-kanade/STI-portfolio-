@@ -78,7 +78,7 @@ export function Projects() {
                 <div className="flex flex-1 flex-col p-5">
                   <motion.div variants={cardItem} className="mb-3 flex items-center justify-between">
                     <span className="rounded border border-accent/40 bg-accent/10 px-2 py-0.5 font-mono text-[10px] tracking-widest text-accent uppercase">
-                      [{p.tag}]
+                      {p.tag}
                     </span>
                     <span className="font-mono text-[10px] tracking-widest text-mut">
                       {String(i + 1).padStart(2, "0")} / {String(PROJECTS.length).padStart(2, "0")}
@@ -112,6 +112,14 @@ export function Projects() {
                           </span>
                         </span>
                       ))}
+                    </motion.div>
+                  )}
+
+                  {/* Trust highlight */}
+                  {p.trust && (
+                    <motion.div variants={cardItem} className="mt-3 flex items-center gap-2 rounded-lg border border-accent/20 bg-accent/5 px-3 py-2">
+                      <span className="size-1.5 shrink-0 rounded-full bg-accent" />
+                      <p className="text-[11px] leading-snug text-ink/80">{p.trust}</p>
                     </motion.div>
                   )}
 

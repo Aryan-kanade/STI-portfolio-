@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect, useCallback, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 
 const BRONZE = "#cd7f32"
@@ -48,57 +48,54 @@ function BrowserChrome({ tag, live }: { tag: string; live?: string }) {
   )
 }
 
-/* ---- 0 — EMS Energy Dashboard -------------------------------------------- */
-function EmsDashboard({ variant = 0 }: { variant?: number }) {
-  const sites = variant === 1 ? ["Wind Farm B", "Cooling Unit 3", "Office Block"] : ["Solar Array A", "Plant Floor 2", "Warehouse"]
-  const bars = variant === 1 ? [55, 42, 73, 61, 85, 48, 92, 70, 58, 80, 65, 77] : [38, 52, 64, 49, 71, 60, 78, 66, 84, 72, 90, 80]
-  const kpis = variant === 1 ? ["3.1 MW", "−12%", "18", "WARN"] : ["2.4 MW", "−8%", "12", "OK"]
+/* ---- 0 — EMS Energy Dashboard (Image Carousel) ---------------------------- */
+const EMS_SLIDES = Array.from({ length: 6 }, (_, i) => `/EMS%20Dashboard/${i + 1}.png`)
+
+function EmsDashboard() {
+  const [slide, setSlide] = useState(0)
+  const timer = useRef<ReturnType<typeof setInterval>>()
+
+  const startTimer = useCallback(() => {
+    clearInterval(timer.current)
+    timer.current = setInterval(() => {
+      setSlide((s) => (s + 1) % EMS_SLIDES.length)
+    }, 3000)
+  }, [])
+
+  useEffect(() => {
+    startTimer()
+    return () => clearInterval(timer.current)
+  }, [startTimer])
+
   return (
-    <svg viewBox="0 0 620 320" fill="none" className="h-full w-full" role="img" aria-label="Energy monitoring dashboard UI">
-      {defs("ems")}
-      <BrowserChrome tag="ems" live="LIVE" />
-      {/* KPI row */}
-      {[0, 1, 2, 3].map((i) => (
-        <g key={i}>
-          <rect x={20 + i * 146} y={48} width="134" height="56" rx="10" fill="var(--color-glass)" stroke="var(--color-line)" />
-          <rect x={32 + i * 146} y={60} width="54" height="8" rx="3" fill="var(--color-mut)" opacity="0.5" />
-          <text x={32 + i * 146} y={92} fontSize="18" fontWeight="700" fill="var(--color-ink)" fontFamily="Space Grotesk, sans-serif">
-            {kpis[i]}
-          </text>
-        </g>
-      ))}
-      {/* chart card */}
-      <rect x="20" y="116" width="388" height="184" rx="12" fill="var(--color-glass)" stroke="var(--color-line)" />
-      <rect x="34" y="128" width="90" height="9" rx="3" fill="var(--color-mut)" opacity="0.5" />
-      <rect x="34" y="142" width="44" height="6" rx="2" fill={`url(#ems)`} opacity="0.7" />
-      {/* bars — animate in from bottom */}
-      {bars.map((h, i) => (
-        <rect
-          key={i}
-          x={42 + i * 28}
-          width="16"
-          rx="3"
-          fill={`url(#ems)`}
-          opacity={i === bars.length - 2 ? 1 : 0.5}
-        >
-          <animate attributeName="y" from="280" to={280 - h * 1.4} dur="0.8s" begin={`${0.3 + i * 0.06}s`} fill="freeze" />
-          <animate attributeName="height" from="0" to={h * 1.4} dur="0.8s" begin={`${0.3 + i * 0.06}s`} fill="freeze" />
-        </rect>
-      ))}
-      <line x1="34" y1="280" x2="394" y2="280" stroke="var(--color-line)" />
-      {/* side: site list */}
-      <rect x="424" y="116" width="176" height="184" rx="12" fill="var(--color-glass)" stroke="var(--color-line)" />
-      <rect x="438" y="128" width="70" height="9" rx="3" fill="var(--color-mut)" opacity="0.5" />
-      {sites.map((s, i) => (
-        <g key={s}>
-          <rect x="438" y={150 + i * 46} width="148" height="38" rx="8" fill="var(--color-raise)" stroke="var(--color-line)" />
-          <circle cx="452" cy={169 + i * 46} r="4.5" fill={i === 0 ? AMBER : i === 1 ? "#5ac28a" : "#e06c5a"} />
-          <rect x="466" y={163 + i * 46} width="78" height="7" rx="3" fill="var(--color-ink)" opacity="0.75" />
-          <rect x="466" y={175 + i * 46} width="48" height="5" rx="2.5" fill="var(--color-mut)" opacity="0.55" />
-          <rect x="556" y={163 + i * 46} width="22" height="12" rx="6" fill={`url(#ems)`} opacity="0.6" />
-        </g>
-      ))}
-    </svg>
+    <div className="relative h-full w-full overflow-hidden rounded-xl" style={{ aspectRatio: "620/320", background: "var(--color-bg2)", border: "1px solid var(--color-line)" }}>
+      {/* Carousel images */}
+      <AnimatePresence mode="wait">
+        <motion.img
+          key={slide}
+          src={EMS_SLIDES[slide]}
+          alt={`EMS Dashboard screenshot ${slide + 1}`}
+          className="absolute inset-0 h-full w-full object-cover"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5 }}
+          draggable={false}
+        />
+      </AnimatePresence>
+
+      {/* Dot indicators */}
+      <div className="absolute bottom-2 inset-x-0 z-10 flex justify-center gap-1.5">
+        {EMS_SLIDES.map((_, i) => (
+          <button
+            key={i}
+            onClick={(e) => { e.stopPropagation(); setSlide(i); startTimer() }}
+            className={`size-1.5 rounded-full transition-all duration-200 ${i === slide ? "bg-accent scale-125" : "bg-mut/30 hover:bg-mut/50"}`}
+            aria-label={`Show slide ${i + 1}`}
+          />
+        ))}
+      </div>
+    </div>
   )
 }
 
@@ -237,20 +234,23 @@ const VARIANTS_COUNT = 2 // each preview has 2 data variants
 export function ProjectPreview({ index }: { index: number }) {
   const [variant, setVariant] = useState(0)
   const View = VIEWS[index] ?? EmsDashboard
+  const isEms = index === 0
 
   return (
     <div>
       <div
-        className="group/preview relative cursor-pointer shadow-card overflow-hidden rounded-xl"
-        onClick={() => setVariant((v) => (v + 1) % VARIANTS_COUNT)}
-        role="button"
-        tabIndex={0}
-        aria-label={`Toggle preview variant ${variant + 1} of ${VARIANTS_COUNT}`}
-        onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") setVariant((v) => (v + 1) % VARIANTS_COUNT) }}
+        className={`group/preview relative shadow-card overflow-hidden rounded-xl${isEms ? "" : " cursor-pointer"}`}
+        {...(!isEms && {
+          onClick: () => setVariant((v) => (v + 1) % VARIANTS_COUNT),
+          role: "button",
+          tabIndex: 0,
+          "aria-label": `Toggle preview variant ${variant + 1} of ${VARIANTS_COUNT}`,
+          onKeyDown: (e: React.KeyboardEvent) => { if (e.key === "Enter" || e.key === " ") setVariant((v) => (v + 1) % VARIANTS_COUNT) },
+        })}
       >
         <AnimatePresence mode="wait">
           <motion.div
-            key={variant}
+            key={isEms ? "ems" : variant}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -268,17 +268,19 @@ export function ProjectPreview({ index }: { index: number }) {
           <div className="absolute inset-x-0 top-0 h-px grad-line opacity-70" />
         </div>
       </div>
-      {/* Dot indicators */}
-      <div className="mt-2 flex justify-center gap-1.5">
-        {Array.from({ length: VARIANTS_COUNT }, (_, i) => (
-          <button
-            key={i}
-            onClick={() => setVariant(i)}
-            className={`size-1.5 rounded-full transition-all duration-200 ${i === variant ? "bg-accent scale-125" : "bg-mut/30 hover:bg-mut/50"}`}
-            aria-label={`Show variant ${i + 1}`}
-          />
-        ))}
-      </div>
+      {/* Dot indicators (only for variant-based previews) */}
+      {!isEms && (
+        <div className="mt-2 flex justify-center gap-1.5">
+          {Array.from({ length: VARIANTS_COUNT }, (_, i) => (
+            <button
+              key={i}
+              onClick={() => setVariant(i)}
+              className={`size-1.5 rounded-full transition-all duration-200 ${i === variant ? "bg-accent scale-125" : "bg-mut/30 hover:bg-mut/50"}`}
+              aria-label={`Show variant ${i + 1}`}
+            />
+          ))}
+        </div>
+      )}
     </div>
   )
 }

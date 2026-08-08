@@ -15,13 +15,15 @@ export const CONTACT = {
 }
 
 export const HERO = {
-  eyebrow: "// Software Engineering Company · Kolhapur, Maharashtra",
+  eyebrow: "// AI Software Engineering Kolhapur, Maharashtra",
   name: "Shivaswarajya Techno Innovation",
   headline: [
-    "We turn manual operations into",
-    "reliable digital systems",
-  ] as [string, string],
-  sub: "Software engineering for growing businesses and industrial sectors — custom software, mobile apps, AI automation and IoT, built to keep working as you scale.",
+    "Custom software,",
+    "mobile apps &",
+    "AI solutions for",
+    "growing businesses.",
+  ] as [string, string, string, string],
+  sub: "Software engineering for growing businesses and industrial sectors custom software, mobile apps, AI automation and IoT, built to keep working as you scale.",
   primaryCta: { label: "View selected work", href: "#work" },
   secondaryCta: { label: "Continue on WhatsApp", href: CONTACT.whatsapp },
   trust: [
@@ -48,6 +50,7 @@ export const PROJECTS = [
       { value: "−14%", label: "Overall Energy Waste" },
       { value: "< 2s", label: "Real-Time Alert Latency" },
     ],
+    trust: "Trusted to monitor and measure 6 Cr+ kWh of electricity consumption across operations.",
   },
   {
     name: "Interstellar Platform",

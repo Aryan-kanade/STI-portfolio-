@@ -4,7 +4,7 @@ import { useRef } from "react"
 import { HERO } from "../lib/data"
 import { LogoMark } from "./Logo"
 import { GradientShimmer, BRAND_GRADIENT } from "./GradientShimmer"
-import { useMagnetic, useTypewriter } from "../lib/utils"
+import { useMagnetic } from "../lib/utils"
 
 const container: Variants = {
   hidden: {},
@@ -47,12 +47,9 @@ function HeroParticles() {
   )
 }
 
-const TYPO_PHRASES = ["custom software", "mobile apps", "AI & IoT systems", "digital operations"]
-
 export function Hero() {
   const ctaRef = useRef<HTMLAnchorElement>(null)
   useMagnetic(ctaRef, 0.25)
-  const typed = useTypewriter(TYPO_PHRASES)
 
   return (
     <section
@@ -121,6 +118,7 @@ export function Hero() {
             className="max-w-2xl font-display text-[clamp(2rem,5.5vw,3.75rem)] leading-[1.1] font-bold tracking-tight"
           >
             {HERO.headline[0]}{" "}
+            {HERO.headline[1]}{" "}
             <GradientShimmer
               gradient={BRAND_GRADIENT}
               baseColor="var(--color-copper)"
@@ -128,18 +126,12 @@ export function Hero() {
               duration={2}
               className="font-display font-bold"
             >
-              {`${HERO.headline[1]}.`}
+              {HERO.headline[2]} {HERO.headline[3]}
             </GradientShimmer>
           </motion.h1>
 
           <motion.p variants={item} className="mt-6 max-w-xl text-lg leading-relaxed text-mut">
-            Engineering for growing businesses
-            <br />
-            building{" "}
-            <span className="inline-block font-medium text-ink">
-              {typed}
-              <span className="ml-0.5 inline-block w-[2px] animate-pulse bg-accent align-middle" aria-hidden>&nbsp;</span>
-            </span>
+            {HERO.sub}
           </motion.p>
 
           <motion.div variants={item} className="mt-6 flex flex-wrap items-center gap-4">

@@ -2,6 +2,7 @@
 
 > **Complete reference for the Shivaswarajya Techno Innovation portfolio.**
 > Read this file instead of scanning the entire codebase when making changes.
+> **After making any code changes, update this file to stay accurate.**
 
 ---
 
@@ -10,17 +11,19 @@
 | Field | Value |
 |---|---|
 | **Client** | Shivaswarajya Techno Innovation (company portfolio, plural voice) |
-| **Type** | Single-page portfolio / marketing site |
+| **Type** | Single-page portfolio / marketing site (SPA, no routing) |
 | **URL** | `https://shivaswarajya.com` |
 | **Location** | Kolhapur, Maharashtra, India |
 | **Contact** | +91 89565 29972 · contact@shivaswarajya.com |
 | **Framework** | React 19 + TypeScript 6 + Vite 8 |
-| **Styling** | Tailwind CSS v4 (`@theme inline`, no config file) |
+| **Styling** | Tailwind CSS v4 (`@theme inline` in index.css, no config file) |
 | **Animation** | framer-motion v12 + Web Animations API + CSS keyframes |
 | **Icons** | @phosphor-icons/react (duotone + bold) |
-| **Design** | Dark Copper / Amber / Bronze — near-black backgrounds |
+| **Design** | Dark-only — Copper / Amber / Bronze on near-black |
 | **Build** | `tsc -b && vite build` (gzip + brotli) |
-| **Deploy** | Vercel (primary) / Netlify / Cloudflare (configs present) |
+| **Deploy** | Static SPA (404.html fallback), no platform-specific config |
+| **Env Vars** | None |
+| **API** | None (forms use mailto:) |
 
 ---
 
@@ -28,9 +31,8 @@
 
 ```
 shivaswarajya/
-├── index.html                    # Entry HTML, meta, preloads, OG tags, noscript fallback
-├── vite.config.ts                # Plugins, path alias, manual chunks
-├── vercel.json                   # Vercel cache headers
+├── index.html                    # Entry HTML, SEO meta, preloads, OG tags, noscript fallback
+├── vite.config.ts                # Plugins, path alias @→./src, manual chunks
 ├── tsconfig.json                 # Root references (app + node)
 ├── tsconfig.app.json             # src/ TS config (ES2023, bundler, @/* alias)
 ├── tsconfig.node.json            # vite.config.ts TS config
@@ -38,41 +40,43 @@ shivaswarajya/
 ├── package.json                  # Dependencies & scripts
 ├── public/
 │   ├── logo.png                  # 36 KB, 512×512 — main site logo
-│   ├── favicon.svg               # 373 B — branded SVG favicon (copper/amber bars+dot)
-│   ├── founder.webp              # 44 KB — preferred founder photo format
+│   ├── favicon.svg               # 373 B — branded SVG favicon
+│   ├── founder.webp              # 44 KB — preferred founder photo
 │   ├── founder.png               # 1.8 MB — founder photo PNG fallback
-│   ├── system-engine.webp        # 84 KB — process diagram preferred format
+│   ├── system-engine.webp        # 84 KB — process diagram preferred
 │   ├── system-engine.png         # 1.9 MB — process diagram PNG fallback
 │   ├── videoHome.webm            # 4.2 MB — hero background video
-│   ├── og-image.png              # 1200×630 — social sharing image (PNG)
+│   ├── og-image.png              # 1200×630 — social sharing image
 │   ├── manifest.json             # PWA manifest (standalone, theme #cd7f32)
 │   ├── sitemap.xml               # Single URL, lastmod 2026-08-04
 │   ├── robots.txt                # Allow all + sitemap
 │   ├── 404.html                  # Styled 404 with 3s auto-redirect
-│   ├── laurel_left.png           # 2.5 KB — Philosophy ornament
-│   ├── laurel_right.png          # 2.4 KB — Philosophy ornament
+│   ├── laurel_left.png           # Philosophy ornament
+│   ├── laurel_right.png          # Philosophy ornament
+│   ├── EMS Dashboard/            # 6 PNGs (1.png–6.png) — project preview images
+│   │   └── 1.png … 6.png
 │   └── fonts/
-│       ├── Inter.woff2           # 47 KB — body font (preloaded in HTML)
-│       ├── SpaceGrotesk.woff2    # 22 KB — display font (preloaded in HTML)
+│       ├── Inter.woff2           # 47 KB — body font (preloaded)
+│       ├── SpaceGrotesk.woff2    # 22 KB — display font (preloaded)
 │       └── JetBrainsMono.woff2   # 31 KB — monospace font
 └── src/
-    ├── main.tsx                  # React root, StrictMode, ErrorBoundary
+    ├── main.tsx                  # React root: StrictMode > ErrorBoundary > App
     ├── App.tsx                   # Section orchestration, lazy loading, hash scroll
-    ├── index.css                 # Tailwind v4 + @theme + ALL custom CSS
+    ├── index.css                 # Tailwind v4 import + @theme + ALL custom CSS
     ├── lib/
-    │   ├── data.ts               # ALL content constants (NAV → CTA)
-    │   └── utils.ts              # useCountUp, useMagnetic, useTypewriter
+    │   ├── data.ts               # ALL content constants (NAV → CTA, ~266 lines)
+    │   └── utils.ts              # useCountUp, useMagnetic, useTypewriter (unused)
     └── components/
         ├── Hero.tsx              # Full-screen video hero + particles + orbs
         ├── Navbar.tsx            # Glass nav, mobile menu, active underline, magnetic CTA
         ├── Loader.tsx            # Branded intro animation
         ├── ScrollProgress.tsx    # Fixed top progress bar
-        ├── JsonLd.tsx            # Structured data (LocalBusiness, Person, etc.)
-        ├── Projects.tsx          # 3 project cards with expandable details + metric animation
-        ├── ProjectPreview.tsx    # 3 interactive SVG UI mockups
-        ├── StatsBar.tsx          # 4 animated stat counters
+        ├── JsonLd.tsx            # Structured data (LocalBusiness, Person, WebSite, FAQPage)
+        ├── Projects.tsx          # 3 project cards + StatsBar (embedded), expandable details
+        ├── ProjectPreview.tsx    # 3 interactive SVG UI mockups (2 variants each)
+        ├── StatsBar.tsx           # ⚠️ DEAD — exported but never imported anywhere
         ├── Capabilities.tsx      # 6 service cards with tech chips
-        ├── BuildAnimation.tsx    # Timeline + engine image
+        ├── BuildAnimation.tsx    # Timeline + engine image (process section)
         ├── Domains.tsx           # 4 industry cards
         ├── Principles.tsx        # 4 principle cards
         ├── Philosophy.tsx        # Quote card with laurels
@@ -81,10 +85,10 @@ shivaswarajya/
         ├── Faq.tsx               # Grid-based accordion with icons
         ├── CtaBand.tsx           # Animated-border CTA band, data-driven headline
         ├── Contact.tsx           # Form + sidebar (ARIA-enhanced floating inputs)
-        ├── Footer.tsx            # 3-col footer + social cards + mailto: form with feedback
+        ├── Footer.tsx            # 3-col footer + social cards + mailto: form
         ├── BackToTop.tsx          # SVG progress ring button
         ├── SectionFade.tsx       # Gradient section dividers
-        ├── Shared.tsx            # SectionHeading + Reveal (with direction prop)
+        ├── Shared.tsx            # SectionHeading + Reveal (direction prop)
         ├── Logo.tsx              # LogoMark + Logo components
         ├── GradientShimmer.tsx   # Web Animations API text shimmer (~488 lines)
         ├── ErrorBoundary.tsx     # Class component error page
@@ -107,8 +111,8 @@ shivaswarajya/
 | @phosphor-icons/react | ^2.1.10 | Icon system (duotone + bold weights) |
 | @tailwindcss/vite | ^4.3.3 | Tailwind Vite plugin |
 | tailwindcss | ^4.3.3 | Utility CSS framework |
-| clsx | ^2.1.1 | Conditional classNames (installed but **unused** — cn() was removed) |
-| tailwind-merge | ^3.6.0 | Tailwind class conflict resolution (installed but **unused**) |
+| clsx | ^2.1.1 | ⚠️ Installed but **unused** |
+| tailwind-merge | ^3.6.0 | ⚠️ Installed but **unused** |
 
 ### Dev Dependencies
 
@@ -121,7 +125,7 @@ shivaswarajya/
 | @types/react | ^19.2.17 | React types |
 | @types/react-dom | ^19.2.3 | ReactDOM types |
 | @types/node | ^24.13.3 | Node types |
-| oxlint | ^1.75.0 | Linter |
+| oxlint | ^1.75.0 | Linter (not ESLint) |
 
 ### npm Scripts
 
@@ -161,7 +165,7 @@ npm run preview  # vite preview (production preview)
 
 **Design Language: "Dark Copper"** — dark-only theme (no light mode)
 
-### CSS Custom Properties (defined in `@theme inline`)
+### CSS Custom Properties (defined in `@theme inline` in index.css)
 
 ```css
 /* Backgrounds */
@@ -192,15 +196,10 @@ npm run preview  # vite preview (production preview)
 --font-mono:      'JetBrains Mono', ...    /* code/monospace */
 
 /* Radii */
---radius-sm:  8px
---radius:     12px
---radius-lg:  16px
---radius-xl:  20px
+--radius-sm:  8px   --radius: 12px   --radius-lg: 16px   --radius-xl: 20px
 
 /* Shadows */
---shadow-sm:   subtle shadow
---shadow:      medium shadow
---shadow-glow: copper accent glow
+--shadow-sm, --shadow, --shadow-glow
 
 /* Scrims (video overlay levels) */
 --scrim-heavy: rgba(7,6,10,0.82)
@@ -213,23 +212,19 @@ npm run preview  # vite preview (production preview)
 ```
 linear-gradient(105deg, var(--color-amber) 0%, var(--color-accent) 55%, var(--color-copper) 100%)
 ```
-
-Used in `.grad-line` (horizontal bar), GradientShimmer component, various accent bars.
+Used in `.grad-line`, GradientShimmer, various accent bars.
 
 ### Tailwind v4 Usage
 
-All `@theme inline` tokens are auto-available as Tailwind utilities:
-- `text-ink`, `bg-bg`, `border-line`, `text-accent`, `font-display`, `shadow-glow`, etc.
+All `@theme inline` tokens are auto-available as Tailwind utilities: `text-ink`, `bg-bg`, `border-line`, `text-accent`, `font-display`, `shadow-glow`, etc.
 
 ---
 
 ## Custom CSS Classes (index.css)
 
-### Key Utility Classes
-
 | Class | Effect |
 |---|---|
-| `.glass` | glassmorphism: glass bg + border + backdrop-filter: blur 14px |
+| `.glass` | Glassmorphism: glass bg + border + backdrop-filter: blur 14px |
 | `.shadow-card` | Card shadow (dark) |
 | `.shadow-glow` | Copper accent glow shadow |
 | `.grad-line` | Brand gradient as horizontal bar |
@@ -255,28 +250,15 @@ All `@theme inline` tokens are auto-available as Tailwind utilities:
 ### CSS @property
 
 ```css
-@property --border-angle {
-  syntax: "<angle>";
-  initial-value: 0deg;
-  inherits: false;
-}
-/* Used by .animated-border for conic gradient rotation on CTA band */
-
-@property --portrait-angle {
-  syntax: "<angle>";
-  initial-value: 0deg;
-  inherits: false;
-}
-/* Used by .animated-border-portrait for conic gradient rotation on founder portrait */
+@property --border-angle { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+@property --portrait-angle { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
 ```
 
 ### Global Styles
 
-- `scroll-behavior: smooth`
-- `color-scheme: dark`
+- `scroll-behavior: smooth`, `color-scheme: dark`
 - `section[id] { scroll-margin-top: 4.5rem }` (work section: 1rem)
-- `::selection` — accent color
-- `:focus-visible` — outline
+- `::selection` — accent color, `:focus-visible` — outline
 - Custom scrollbar: WebKit 8px accent thumb + Firefox thin accent
 - **Print:** light theme, hides nav/footer/video, single column, link URLs shown
 - **Reduced motion:** `prefers-reduced-motion: reduce` disables all animations/transitions
@@ -290,10 +272,9 @@ All `@theme inline` tokens are auto-available as Tailwind utilities:
 **Render order:**
 1. Skip-to-content link (accessibility)
 2. JsonLd, Loader, ScrollProgress, Navbar (always mounted)
-3. `<main>`:
+3. `<main id="main">`:
    - **Hero** (eager, `id="home"`)
-   - **Projects** (eager, `id="work"`)
-   - **StatsBar** (eager)
+   - **Projects** (eager, `id="work"` — includes embedded StatsBar)
    - **Capabilities** (eager, `id="capabilities"`)
    - **BuildAnimation** (LAZY, `id="process"`)
    - **Domains** (LAZY)
@@ -311,11 +292,21 @@ All `@theme inline` tokens are auto-available as Tailwind utilities:
 ```ts
 const LazyX = lazy(() => import("./components/X").then(m => ({ default: m.X })))
 ```
-Suspense fallback: `<div className="min-h-[24rem]">`
+Suspense fallback: `<div className="min-h-[24rem]" aria-hidden />`
 
 **Hash scroll:** Custom `useHashScroll()` hook scrolls to URL hash on mount + hashchange. Retries up to 20× (100ms apart) for lazy-loaded targets.
 
 **MotionConfig:** `<MotionConfig reducedMotion="user">` wraps entire app.
+
+### Navigation IDs
+
+| Label | Hash | Component |
+|---|---|---|
+| Work | `#work` | Projects |
+| Capabilities | `#capabilities` | Capabilities |
+| Process | `#process` | BuildAnimation |
+| About | `#about` | Founder |
+| Contact | `#contact` | Contact |
 
 ---
 
@@ -325,11 +316,8 @@ Suspense fallback: `<div className="min-h-[24rem]">`
 - **Full-screen** with `videoHome.webm` background + scrim overlay
 - **`poster="/og-image.png"`** — static fallback for Safari/iOS
 - **8 floating particles** (CSS drift animation)
-- **3 gradient orbs** — responsive sizing:
-  - Orb 1: `w-[180px] sm:w-[260px] md:w-[340px] lg:w-[420px]`
-  - Orb 2: `w-[140px] sm:w-[220px] md:w-[280px] lg:w-[340px]`
-  - Orb 3: `w-[120px] sm:w-[180px] md:w-[220px] lg:w-[260px]`
-- **LogoMark** + typewriter cycling: `["custom software", "mobile apps", "AI & IoT systems", "digital operations"]`
+- **3 gradient orbs** — responsive sizing: 180px→420px breakpoints
+- **LogoMark** + static 4-line headline from `HERO.headline[]`
 - **GradientShimmer** on headline
 - **Magnetic CTA** buttons (useMagnetic hook)
 - Trust checkmarks (3 items from HERO.trust)
@@ -344,16 +332,11 @@ Suspense fallback: `<div className="min-h-[24rem]">`
   - Tag badge (colored pill)
   - LogoMark + headline + solution text
   - Animated metrics via `useCountUp` (MetricValue sub-component)
-  - Tech tags with hover lift (`hover:-translate-y-0.5 hover:shadow-sm`)
-  - **Expandable details:** `ProjectDetails` component — "See how" accordion revealing `problem` (Target icon) + `approach` (Lightbulb icon), AnimatePresence height animation, CaretDown toggle, `aria-expanded`
+  - Tech tags with hover lift
+  - **Expandable details:** "See how" accordion with `problem` + `approach`, AnimatePresence height animation, CaretDown toggle, `aria-expanded`
   - "Discuss This Project" link → WhatsApp
+- **StatsBar embedded inside** (4 stats: 4+ Industries, 6+ Systems, 99.9% Uptime, 24h Response)
 - Stagger variants (0.04s stagger)
-
-#### 02.5 — StatsBar (StatsBar.tsx)
-- **4 stats:** 3+ Industries, 6+ Systems, 99.9% Uptime, 24h Response
-- `useCountUp` with 1400ms duration
-- **Local STATS array** (defined in component, NOT in data.ts)
-- Grid: 2×2 on mobile → 4-col on desktop
 
 #### 03 — Capabilities (Capabilities.tsx)
 - **Section: "02 Capabilities"**
@@ -361,16 +344,15 @@ Suspense fallback: `<div className="min-h-[24rem]">`
 - **Icon mapping:** Code, DeviceMobileCamera, Browser, Robot, Cpu, Cloud
 - `anim-float` per card
 - Deliverables checklist (from CAPABILITIES[i].points)
-- TECH_STACK tags below grid with hover lift (`hover:-translate-y-0.5 hover:shadow-sm hover:border-accent/40 hover:text-ink`)
+- TECH_STACK tags below grid with hover lift
 - Bottom accent bar per card
 
 #### 04 — BuildAnimation / Process (BuildAnimation.tsx)
 - **Section: "03 The Build-Then-Own Loop"**
 - **2-column layout:**
   - Left: GlowCard with EngineImage (system-engine.webp, shimmer skeleton)
-  - Right: TimelineSteps (4 numbered steps)
-- **Static connecting line** — decorative `<span>` with `w-px bg-line` (no scroll animation)
-- Steps from METHODOLOGY.steps
+  - Right: TimelineSteps (4 numbered steps from METHODOLOGY.steps)
+- **Static connecting line** — decorative `<span>` with `w-px bg-line`
 
 #### 05 — Domains (Domains.tsx)
 - **Section: "04 Industry Domains"**
@@ -380,63 +362,53 @@ Suspense fallback: `<div className="min-h-[24rem]">`
 #### 06 — Principles (Principles.tsx)
 - **Section: "05 Engineering Principles"**
 - **4 GlowCards** with number badges
-- ArrowUpRight hover reveal
-- Gradient bottom bar
+- ArrowUpRight hover reveal, gradient bottom bar
 
 #### 07 — Philosophy (Philosophy.tsx)
 - **Section: "06 Philosophy"**
 - **Single centered GlowCard**
 - Laurel ornaments (laurel_left/right.png, hidden on mobile)
 - **GradientShimmer** on FOUNDER.quote
-- Decorative divider
 
 #### 08 — Founder (Founder.tsx)
 - **Section: "07 About"**
 - **2-column:**
   - Left: Circular portrait (WebP+PNG, shimmer skeleton, **animated-border-portrait** rotating conic gradient)
   - Right: Company name, role, bio, expandable highlights
-- **Expandable highlights:** 3 pills, clicking reveals body text with AnimatePresence height animation + CaretDown toggle icon
+- **Expandable highlights:** 3 pills, clicking reveals body text with AnimatePresence + CaretDown toggle
 - `expandedIdx` state (number | null)
-- **No blockquote** — quote was removed per user request
-- Section heading: "The team behind the systems"
 
 #### 09 — Testimonials (Testimonials.tsx)
 - **Section: "09 Testimonials"**
 - **Infinite carousel** — items duplicated for seamless loop
 - **CSS-only:** `.carousel-track` with `carousel-scroll` keyframe (30s, pause on hover + focus-within)
-- `role="region"`, `aria-roledescription="carousel"`, `aria-label`, `tabIndex={0}` for keyboard accessibility
+- `role="region"`, `aria-roledescription="carousel"`, `tabIndex={0}` for keyboard accessibility
 - Fade edges (gradient masks)
-- Card width: 300px / 340px
 
 #### 10 — FAQ (Faq.tsx)
 - **Section: "08 FAQ"**
 - **Grid-based accordion** — `.faq-grid` / `.faq-grid open` (0fr ↔ 1fr)
-- **6 contextual icons** (duotone, colored when open):
-  - Coin, ChatCircle, Wrench, Globe, ArrowClockwise, ShieldCheck
-- Plus icon rotates to × (45deg) on open
-- Accent bar on open item
-- Full ARIA (aria-expanded, aria-controls, role=region)
+- **6 contextual icons** (duotone): Coin, ChatCircle, Wrench, Globe, ArrowClockwise, ShieldCheck
+- Plus icon rotates to × (45deg) on open, accent bar on open item
 
 #### 11 — CTA Band (CtaBand.tsx)
-- **animated-border** — CSS conic gradient rotation
-- `glow-pulse` animation
+- **animated-border** — CSS conic gradient rotation + `glow-pulse`
 - Radial gradient background
 - Trust signals: 24h reply, NDA, source code
-- Magnetic RippleButton + WhatsApp link (useMagnetic)
-- **Data-driven headline:** `CTAHeadline` component parses `CTA.headline` from data.ts, shimmers the keyword ("AI-powered") via GradientShimmer
+- Magnetic RippleButton + WhatsApp link
+- **Data-driven headline:** `CTAHeadline` parses `CTA.headline` from data.ts, shimmers "AI-powered"
 
 #### 12 — Contact (Contact.tsx)
 - **Section: "10 Contact"**
 - **2-column:**
-  - Left: Form with FloatingInput (ARIA-enhanced: `id`, `aria-describedby`, `aria-invalid`, sr-only hint spans), success animation, submits via mailto:
+  - Left: Form with FloatingInput (ARIA: id, aria-describedby, aria-invalid, sr-only hints), success animation, submits via mailto:
   - Right: Sidebar with phone, email, location + icons
 - NDA badge
-- **FloatingInput:** Local sub-component with floating labels, `peer-focus` pattern, `invalid` state, screen-reader hint `<span id={hintId}>`, floating label `aria-hidden`
 
 #### 13 — Footer (Footer.tsx)
 - **3-column:** logo+description, NAV quick links, social cards
 - **Social cards:** LinkedIn, WhatsApp, Email — branded hover tooltips (AnimatePresence)
-- **Email form:** "Stay connected" → mailto: with **submit feedback** (animated "Opening email client…" state via AnimatePresence + CheckCircle icon before redirect)
+- **Email form:** "Stay connected" → mailto: with **submit feedback** ("Opening email client…")
 - **Availability indicator:** Green pulsing dot + "Available for new projects"
 - Dynamic year
 
@@ -446,7 +418,7 @@ Suspense fallback: `<div className="min-h-[24rem]">`
 
 #### Shared.tsx
 - **`SectionHeading({num, kicker, title, sub})`** — motion fadeIn + slideUp (24px, 0.55s, viewport once, -80px margin). Monospace kicker with gradient lines.
-- **`Reveal({children, delay, className, direction})`** — motion fadeIn + slideUp/slideLeft/slideRight/scale (24px or scale 0.92, 0.55s, viewport once, -60px margin). Direction prop: `"up" | "left" | "right" | "scale"`, default `"up"`.
+- **`Reveal({children, delay, className, direction})`** — motion fadeIn + slideUp/slideLeft/slideRight/scale (24px or scale 0.92, 0.55s, viewport once, -60px margin). Direction: `"up" | "left" | "right" | "scale"`, default `"up"`.
 
 #### Logo.tsx
 - **`LogoMark`** — `<img>` logo.png, 512×512
@@ -456,26 +428,21 @@ Suspense fallback: `<div className="min-h-[24rem]">`
 - Web Animations API text shimmer effect
 - **9 presets:** sunrise, bubble, peach, tonic, mint, spring, twilight, bay + BRAND_GRADIENT
 - Visibility gates: IntersectionObserver, visibilitychange, scroll-idle
-- SSR-safe
-- Props: `gradient`, `easing` (smooth/gentle/snappy), `duration`, `spread`, `angle`, `pauseBetween`, `baseColor`, `pauseOnScroll`, `pauseWhenOffscreen`, `respectReducedMotion`, `as`
+- Props: `gradient`, `easing`, `duration`, `spread`, `angle`, `pauseBetween`, `baseColor`, `pauseOnScroll`, `pauseWhenOffscreen`, `respectReducedMotion`, `as`
 
 #### SectionFade.tsx
 - 16px gradient div at section boundaries
 - Props: `direction` ("up"/"down"), `color`
-- Uses inline `backgroundImage` style
 
 #### ProjectPreview.tsx
 - **3 interactive SVG UI mockups:** EmsDashboard, Console, MobileApp
-- Each has **2 data variants** (click to toggle)
-- AnimatePresence crossfade between variants
+- Each has **2 data variants** (click to toggle), AnimatePresence crossfade
 - Dot indicators for active variant
 - **BrowserChrome** shared component with traffic-light dots
 - Inline `<animate>` elements for bar charts and pulsing indicators
-- Brand gradient SVG defs
 
 #### ErrorBoundary.tsx
-- Class component
-- Branded error page with WhatsApp link + RippleButton reload
+- Class component, branded error page with WhatsApp link + RippleButton reload
 
 ---
 
@@ -486,124 +453,80 @@ Suspense fallback: `<div className="min-h-[24rem]">`
 - **Optional 3D tilt:** When className includes `"card-tilt"` — max 6deg rotation
 - **Touch detection:** Static center glow on touch-primary devices
 - Uses `outerRef` (mouse tracking) + `innerRef` (3D tilt)
-- State: `position`, `opacity`, `isTouch`
 
 #### RippleButton.tsx
-- Material-style click ripple
-- Tracks ripples by ID, auto-removes after 600ms
+- Material-style click ripple, auto-removes after 600ms
 - `rippleColor` prop (default: white 0.35)
-- Spawns expanding circle from click coordinates
 
 ---
 
 ## Custom Hooks (src/lib/utils.ts)
 
-### `useCountUp`
+### `useCountUp` ✅ Active
 ```ts
 useCountUp(target: number, opts?: { decimals?: number; duration?: number; delay?: number })
 → { display: string; ref: React.RefCallback<HTMLElement> }
 ```
-- IntersectionObserver (threshold 0.3), RAF with ease-out cubic
-- Animates 0 → target, fires once
+- IntersectionObserver (threshold 0.3), RAF with ease-out cubic, animates 0 → target, fires once.
+- **Used in:** StatsBar (inside Projects.tsx), Projects MetricValue
 
-### `useMagnetic`
+### `useMagnetic` ✅ Active
 ```ts
 useMagnetic<T extends HTMLElement>(ref: RefObject<T>, strength?: number)
 ```
-- Cursor-follow on hover via RAF
-- Direct `style.transform` manipulation
-- Requires `.magnetic-btn` CSS class on the element
-- **Used on:** Hero CTA, Navbar CTA ("Get a Quote" `<a>` link), CtaBand CTA, Contact CTA
+- Cursor-follow on hover via RAF, direct `style.transform`, springs back on leave.
+- Requires `.magnetic-btn` CSS class.
+- **Used on:** Hero CTA, Navbar CTA ("Get a Quote"), CtaBand CTA, Contact CTA
 
-### `useTypewriter`
+### `useTypewriter` ⚠️ DEAD CODE
 ```ts
 useTypewriter(phrases: string[], opts?: { typeSpeed?: number; deleteSpeed?: number; pauseMs?: number })
-→ { text: string; cursor: boolean }
+→ { display: string }
 ```
-- Cycles phrases typing/deleting char by char
-- setTimeout chain
-- Default: typeSpeed=60, deleteSpeed=30, pauseMs=2000
+- Defined but **never imported anywhere**. Hero used typewriter previously but now uses static multi-line headline.
+- **Candidate for removal.**
 
 ---
 
 ## Data Layer (src/lib/data.ts)
 
-All content is centralized here. **To change any text/links, edit data.ts — no component changes needed.**
+All content is centralized here (~266 lines). **To change any text/links, edit data.ts — no component changes needed.**
 
-### NAV
-```ts
-[
-  { label: "Work",         href: "#work" },
-  { label: "Capabilities", href: "#capabilities" },
-  { label: "Process",      href: "#process" },
-  { label: "About",        href: "#about" },
-  { label: "Contact",      href: "#contact" },
-]
+### Content Constants
+
+| Constant | Content | Lines |
+|---|---|---|
+| `NAV` | 5 nav items: Work, Capabilities, Process, About, Contact | 1–7 |
+| `CONTACT` | phone, whatsapp (wa.me link), email, location | 9–15 |
+| `HERO` | eyebrow, name, headline (4-line static), sub, CTAs, trust (3 items) | 17–34 |
+| `PROJECTS` | 3 case studies with name/tag/headline/problem/approach/solution/tech/metrics/trust | 37–87 |
+| `CAPABILITIES` | 6 services with icon/title/desc/points | 90–127 |
+| `DOMAINS` | 4 industries with icon/title/desc | 130–135 |
+| `METHODOLOGY` | "The Build-Then-Own Loop" — name, pitch, 4 steps | 138–167 |
+| `PRINCIPLES` | 4 engineering principles with title/body | 170–187 |
+| `FOUNDER` | name, role, bio, 3 expandable highlights | 190–199 |
+| `TECH_STACK` | 7 items: React, React Native, Node.js, Express.js, MySQL, IoT/Sensors, APIs | 201–209 |
+| `FAQ` | 6 Q&A pairs | 212–237 |
+| `TESTIMONIALS` | 3 quotes with name/company | 240–256 |
+| `CTA` | eyebrow, headline ("AI-powered" keyword for shimmer), sub, CTAs | 259–265 |
+
+### Key Content Details
+
+**HERO.headline** (static 4-line, NOT typewriter):
+```
+"Custom software,"
+"mobile apps &"
+"AI solutions for"
+"growing businesses."
 ```
 
-### CONTACT
-```ts
-{
-  phone: "+91 89565 29972",
-  phoneHref: "tel:+918956529972",
-  whatsapp: "https://wa.me/918956529972",
-  email: "contact@shivaswarajya.com",
-  location: "Kolhapur, Maharashtra, India",
-}
-```
+**PROJECTS** (3 case studies):
+1. **EMS Dashboard** — Energy/IoT/AI — −14% waste, <2s alerts
+2. **Interstellar Platform** — Automation/AI/Web — 3.2x dispatch, 99.9% sync
+3. **Field Team App** — Field/Mobile/AI — 95% accuracy, 0 paper logs
 
-### HERO
-- eyebrow: `"// Software Engineering Company · Kolhapur, Maharashtra"`
-- name: `"Shivaswarajya Techno Innovation"`
-- headline: `["We turn manual operations into", "reliable digital systems"]`
-- sub: Software engineering description
-- primaryCta: "View selected work" → `#work`
-- secondaryCta: "Continue on WhatsApp" → WhatsApp link
-- trust: 3 items (product thinking, working increments, long-term ownership)
-
-### PROJECTS (3 case studies)
-1. **EMS Dashboard** — Energy / IoT / AI — -14% waste, <2s alerts
-2. **Interstellar Platform** — Automation / AI / Web — 3.2x dispatch, 99.9% sync
-3. **Field Team App** — Field / Mobile / AI — 95% accuracy, 0 paper logs
-
-Each: `name, tag, headline, problem, approach, solution, tech[], metrics[]`
-
-### CAPABILITIES (6 services)
-Custom Software, Mobile Apps, Web Platforms (MERN), AI Automation, AI & IoT Solutions, Cloud & Support
-Each: `icon` (key), `title`, `desc`, `points[]`
-
-### DOMAINS (4)
-Green Energy & Clean Tech, IoT, Business Automation, E-commerce & Admin
-
-### METHODOLOGY
-- name: "The Build-Then-Own Loop"
-- pitch, 4 steps: Strategy, Architecture, Deployment, Support
-
-### PRINCIPLES (4)
-Business-First Engineering, Scalable Architecture, MVP to Production, Long-Term Support
-
-### FOUNDER
-- name: "Shivaswarajya Techno Innovation"
-- role: "Software Engineering Company"
-- bio: Full-stack AI engineering team description
-- **highlights:** 3 items with `title` + `body` (expandable in Founder.tsx)
-
-### TECH_STACK (7)
-React, React Native, Node.js, Express.js, MySQL, IoT/Sensors, APIs
-
-### FAQ (6 Q&As)
-Cost/timeline, getting started, post-launch support, remote work, existing systems, data security
-
-### TESTIMONIALS (3)
-Rajesh Kulkarni (SolarEdge Solutions), Priya Deshmukh (LogiFlow Industries), Amit Patil (GreenField Agritech)
-Each: `quote, name, company`
-
-### CTA
-- eyebrow: `"// Let's build"`
-- headline: "Got an operation that should be AI-powered by now?"
-- sub: 2 strings
-- primaryCta: "Get a Quote" → `#contact`
-- secondaryCta: "Continue on WhatsApp"
+**StatsBar** (local to Projects.tsx, NOT in data.ts):
+- 4+ Industries, 6+ Systems, 99.9% Uptime, 24h Response
 
 ---
 
@@ -611,75 +534,57 @@ Each: `quote, name, company`
 
 | # | Pattern | Technology | Used By |
 |---|---|---|---|
-| 1 | Staggered entrance | framer-motion Variants (staggerChildren) | Hero, Projects, CtaBand |
-| 2 | Scroll-triggered reveal | framer-motion whileInView + direction prop | SectionHeading, Reveal (Shared) |
+| 1 | Staggered entrance | framer-motion Variants | Hero, Projects, CtaBand |
+| 2 | Scroll-triggered reveal | framer-motion whileInView + direction | SectionHeading, Reveal |
 | 3 | Layout animation | framer-motion layoutId + spring | Navbar active underline |
 | 4 | Scroll progress | framer-motion useScroll + useSpring | ScrollProgress, BackToTop |
-| 5 | Magnetic hover | Custom useMagnetic hook + rAF | Hero CTA, Navbar CTA, CtaBand, Contact |
-| 6 | Spotlight glow card | Custom GlowCard (mouse-tracking) | Projects, Capabilities, Domains, Principles, Philosophy, BuildAnimation |
-| 7 | Typewriter | Custom useTypewriter hook | Hero |
-| 8 | Count-up | Custom useCountUp hook + rAF | StatsBar, Projects (MetricValue) |
-| 9 | Gradient shimmer text | Web Animations API (GradientShimmer) | Hero, Projects, Capabilities, BuildAnimation, Principles, CtaBand (CTAHeadline), Contact, Philosophy |
-| 10 | Infinite carousel | Pure CSS (carousel-track, hover + focus-within pause) | Testimonials |
-| 11 | Grid expand/collapse | CSS grid-template-rows transition | Faq accordion |
-| 12 | Conic border rotation | CSS @property --border-angle | CtaBand |
-| 13 | Conic border rotation (portrait) | CSS @property --portrait-angle | Founder portrait |
-| 14 | Floating particles | CSS drift animation | Hero (8), Loader (6) |
-| 15 | Gradient orbs | CSS multi-point drift (responsive sizing) | Hero (3 orbs) |
-| 16 | Loader sequence | framer-motion | Loader |
-| 17 | Click ripple | Custom RippleButton | CtaBand, Contact, Footer, ErrorBoundary |
-| 18 | Mobile menu | framer-motion AnimatePresence | Navbar |
+| 5 | Magnetic hover | useMagnetic hook + rAF | Hero CTA, Navbar CTA, CtaBand, Contact |
+| 6 | Spotlight glow card | GlowCard (mouse-tracking) | Projects, Capabilities, Domains, Principles, Philosophy, BuildAnimation |
+| 7 | Gradient shimmer text | Web Animations API (GradientShimmer) | Hero, CtaBand headline, Philosophy |
+| 8 | Count-up | useCountUp hook + rAF | StatsBar (Projects), MetricValue |
+| 9 | Infinite carousel | Pure CSS (carousel-track, pause on hover/focus) | Testimonials |
+| 10 | Grid expand/collapse | CSS grid-template-rows transition | Faq accordion |
+| 11 | Conic border rotation | CSS @property --border-angle | CtaBand |
+| 12 | Conic border rotation (portrait) | CSS @property --portrait-angle | Founder portrait |
+| 13 | Floating particles | CSS drift animation | Hero (8), Loader (6) |
+| 14 | Gradient orbs | CSS multi-point drift | Hero (3 orbs, responsive) |
+| 15 | Loader sequence | framer-motion | Loader |
+| 16 | Click ripple | RippleButton | CtaBand, Contact, Footer, ErrorBoundary |
+| 17 | Mobile menu | framer-motion AnimatePresence | Navbar |
+| 18 | SVG animate | Inline `<animate>` elements | ProjectPreview (bar charts, pulsing indicators) |
 
-**Reduced motion:** `MotionConfig reducedMotion="user"` + CSS `prefers-reduced-motion: reduce` disables all animations. GradientShimmer shows static gradient when reduced motion is preferred.
+**Reduced motion:** `MotionConfig reducedMotion="user"` + CSS `prefers-reduced-motion: reduce` disables all.
 
 ---
 
 ## Performance Strategy
 
-1. **Code splitting:** framer-motion and @phosphor-icons/react → separate vendor chunks
-2. **Lazy loading:** 8 below-the-fold components via `React.lazy` + `Suspense` (min-height fallback prevents layout shift)
-3. **Dual compression:** Gzip + Brotli for all files > 1 KB
+1. **Code splitting:** framer-motion + @phosphor-icons/react → separate vendor chunks
+2. **Lazy loading:** 9 below-the-fold components via `React.lazy` + `Suspense` (min-h-[24rem] fallback)
+3. **Dual compression:** Gzip + Brotli for files > 1 KB
 4. **Font optimization:** Self-hosted woff2, font-display: swap, Inter + SpaceGrotesk preloaded
-5. **Image optimization:** WebP preferred + PNG fallback, lazy loading + async decoding below fold, shimmer skeletons
-6. **Video:** WebM, preloaded with `poster="/og-image.png"` fallback, `fetchPriority="low"`
-7. **Cache headers:** Immutable 1-year for static assets, must-revalidate for HTML
-8. **Animation performance:** rAF-based effects, spring-smoothed scroll, will-change hints, cleanup in useEffect
-9. **Minimal dependencies:** Only 6 active runtime packages (clsx + tailwind-merge installed but unused)
+5. **Image optimization:** WebP preferred + PNG fallback, shimmer skeletons
+6. **Video:** WebM, preloaded with poster fallback, fetchPriority="low"
+7. **Animation pausing:** GradientShimmer pauses when off-screen/tab-hidden/scroll-idle
+8. **rAF-based effects:** useMagnetic, useCountUp, Navbar scroll listener
 
 ---
 
-## Deployment Configs
-
-### Vercel (vercel.json)
-- `/assets/*`, `/images/*` + JS/CSS/fonts/webm/woff2 → immutable 1-year
-- HTML → must-revalidate
-
-### PWA (manifest.json)
-- Display: standalone
-- Background: #07060a
-- Theme: #cd7f32
-
-### SEO
-- `robots.txt`: Allow all + sitemap link
-- `sitemap.xml`: Single URL, monthly, priority 1.0
-- `og-image.png`: 1200×630 branded social sharing image (absolute URL in OG tags)
-- JSON-LD structured data: LocalBusiness, Person, WebSite, FAQPage
-
----
-
-## HTML Head (index.html)
+## SEO & HTML Head
 
 - `lang="en"`, charset UTF-8, viewport meta
-- Meta: description, author (Shivaswarajya Techno Innovation), theme-color (#07060a), robots (index follow)
+- Meta: description, author ("Shivaswarajya Techno Innovation"), theme-color (#07060a), robots (index follow)
 - **Geo meta:** `geo.region` (IN-MH), `geo.placename` (Kolhapur)
 - Canonical: `https://shivaswarajya.com`
 - Favicons: PNG (logo.png) + SVG (favicon.svg) + Apple touch icon
-- OG tags: type website, url, title, description, image (absolute URL to og-image.png 1200×630), locale en_IN, **site_name**, **image:alt**
-- Twitter card: summary_large_image, **image:alt**
+- Full OG tags: type website, absolute image URL, locale en_IN, site_name, image:alt
+- Twitter card: summary_large_image + image:alt
 - **Preconnect:** wa.me
-- **Preloads:** SpaceGrotesk.woff2, Inter.woff2 (fonts), videoHome.webm (video, fetchPriority="low")
-- Manifest: /manifest.json
-- **Noscript fallback:** Company name + email/WhatsApp links for JS-disabled visitors
+- **Preloads:** SpaceGrotesk.woff2, Inter.woff2, videoHome.webm (fetchPriority="low")
+- **Noscript fallback:** Company name + email/WhatsApp links
+- JSON-LD: LocalBusiness, Person, WebSite, FAQPage schemas
+- PWA manifest (standalone, bg #07060a, theme #cd7f32)
+- robots.txt + sitemap.xml
 
 ---
 
@@ -691,12 +596,12 @@ Each: `quote, name, company`
 ### Adding a new project card
 1. Add object to `PROJECTS` in `data.ts` (include `problem` and `approach` for expandable details)
 2. Add corresponding SVG mockup in `ProjectPreview.tsx` (follow existing pattern)
-3. Update any layout classes if grid count changes
+3. Update grid layout classes if column count changes
 
 ### Adding a new section
-1. Create `src/components/NewSection.tsx`
-2. If below fold: add `export { default as NewSection } from "./NewSection"` pattern for lazy import
-3. Import in `App.tsx`, add lazy wrapper, place in render order
+1. Create `src/components/NewSection.tsx` with named export
+2. If below fold: add lazy import in App.tsx (`lazy(() => import(...).then(m => ({ default: m.X })))`)
+3. Place in App.tsx render order
 4. Add section ID to NAV in `data.ts` + `SECTION_IDS` in Navbar.tsx
 5. Add scroll-margin-top for section in `index.css`
 
@@ -704,16 +609,12 @@ Each: `quote, name, company`
 → Edit CSS custom properties in `@theme inline` block in `src/index.css`
 
 ### Adding an animation
-- **Scroll-triggered:** Use `whileInView` from framer-motion, or `useScroll` + `useTransform`
+- **Scroll-triggered:** Use framer-motion `whileInView` or `Reveal` wrapper
 - **Hover:** Use framer-motion `whileHover` or CSS transitions
 - **Continuous:** Use CSS `@keyframes` + animation class
-- **Entrance:** Use existing `Reveal` or `SectionHeading` wrappers (supports `direction`: up/left/right/scale)
 
 ### Changing icons
-→ Import from `@phosphor-icons/react` — use `weight="duotone"` for filled style, `weight="bold"` for solid
-
-### Adding new CSS utility
-→ Add to `@theme inline` block in `index.css` for Tailwind integration, or add as plain `.class` in the same file
+→ Import from `@phosphor-icons/react` — use `weight="duotone"` for filled, `weight="bold"` for solid
 
 ---
 
@@ -721,20 +622,21 @@ Each: `quote, name, company`
 
 1. **Section numbering** — SectionHeading `num` prop: "01", "02", etc.
 2. **GlowCard** — Wrap interactive cards, add `card-tilt` className for 3D tilt
-3. **Reveal** — Wrap any element that should animate in on scroll (supports `direction`: up/left/right/scale)
-4. **GradientShimmer** — Wrap headline text for shimmer effect, use `gradient="BRAND_GRADIENT"`
+3. **Reveal** — Wrap elements for scroll animation (supports direction: up/left/right/scale)
+4. **GradientShimmer** — Wrap headline text, use `gradient="BRAND_GRADIENT"`
 5. **RippleButton** — Use for all primary CTAs
-6. **useMagnetic** — Apply to CTA buttons for cursor-follow effect (needs `.magnetic-btn` class)
-7. **Image pattern** — `<picture>` with WebP primary + PNG fallback, shimmer loading state
+6. **useMagnetic** — Apply to CTA buttons (needs `.magnetic-btn` class)
+7. **Image pattern** — `<picture>` with WebP primary + PNG fallback, shimmer loading
 8. **Data-first** — All content in `data.ts`, components only render
 9. **Lazy pattern** — `lazy(() => import(...).then(m => ({ default: m.X })))` with named export
 10. **MotionConfig** — `reducedMotion="user"` respects user preference globally
+11. **Component exports** — Named exports (not default) for lazy import pattern
 
 ---
 
 ## User Constraints (DO NOT violate)
 
-- **Dark-only theme** — no light mode, no light/dark toggle
+- **Dark-only theme** — no light mode, no toggle
 - **mailto: forms** — no backend, forms open email client
 - **No hover overlay CTAs** on project cards (was added, user removed it)
 - **No permanent progress bars** on capability cards (was added, user removed it)
@@ -746,72 +648,28 @@ Each: `quote, name, company`
 
 ## Known Issues / Notes
 
-- **`founder.png`** is 1.8 MB — too large, but sharp/imagemin not available on system for compression
-- **FAQ** has a known quirk: icon mapping uses `i % FAQ_ICONS.length` (6 icons for 6 items, 1:1 currently)
-- **StatsBar** stats are defined locally in the component, NOT in `data.ts`
-- **Contact form** submits via `mailto:` (no backend)
-- **No routing** — single-page SPA with hash-based scroll navigation
-- **clsx + tailwind-merge** are still installed in package.json but unused (cn() was removed from utils.ts)
+- **`StatsBar.tsx`** — exported but never imported (dead code). Stats are embedded inside `Projects.tsx` with a local `STATS` array.
+- **`useTypewriter`** — defined in utils.ts but never imported anywhere (dead code after Hero switched to static headline).
+- **`clsx` + `tailwind-merge`** installed in package.json but unused (cn() was removed).
+- **`founder.png`** is 1.8 MB — too large, ideally should be compressed.
+- **Contact form** submits via `mailto:` (no backend).
+- **No routing** — single-page SPA with hash-based scroll navigation.
+- **Hero3D experiment** — was attempted (Three.js) and abandoned (see dev.log). Not in current codebase.
+- **No vercel.json / netlify.toml** — static 404.html handles SPA routing.
 
 ---
 
-## Changelog
+## How to Update This File
 
-### Phase 1–4 Improvements + Founder Quote Removal
+After making any changes to the codebase, update this file to keep it accurate:
 
-| Change | File(s) |
-|---|---|
-| OG image → absolute URL + og:site_name + og:image:alt + twitter:image:alt | index.html |
-| Dead CSS cleanup (removed 3 unused keyframes: shimmer, particle-float, scan-line) | index.css |
-| Dead assets deleted (LOGO 02.png, founder-min.png, og-image.svg) | public/ |
-| Dead _headers deleted (redundant with vercel.json) | public/ |
-| Font preload added for Inter.woff2 | index.html |
-| Video preload → fetchPriority="low" | index.html |
-| Founder portrait → animated conic gradient border (.animated-border-portrait) | Founder.tsx, index.css |
-| Navbar "Get a Quote" → magnetic effect (useMagnetic on CTA link) | Navbar.tsx |
-| Tech stack chips → hover lift (hover:-translate-y-0.5 hover:shadow-sm) | Capabilities.tsx |
-| Reveal component → direction prop ("up" \| "left" \| "right" \| "scale") | Shared.tsx |
-| Hero orbs → responsive sizing (180px → 420px breakpoints) | Hero.tsx |
-| SectionFade → dead Tailwind class removed | SectionFade.tsx |
-| Project cards → expandable problem/approach details (ProjectDetails) | Projects.tsx |
-| "View Case Study" → "Discuss This Project" | Projects.tsx |
-| Noscript fallback added (company name + email/WhatsApp) | index.html |
-| Footer mailto: form → submit feedback ("Opening email client…") | Footer.tsx |
-| CTA headline → data-driven via CTAHeadline (shimmers "AI-powered") | CtaBand.tsx |
-| Carousel → keyboard/focus pause + ARIA (role, aria-roledescription, tabIndex) | Testimonials.tsx, index.css |
-| Hero video → poster="/og-image.png" fallback | Hero.tsx |
-| Contact floating inputs → ARIA (id, aria-describedby, aria-invalid, sr-only hints) | Contact.tsx |
-| Geo meta tags (IN-MH, Kolhapur) + wa.me preconnect | index.html |
-| Dead `cn()` function removed from utils.ts | utils.ts |
-| Founder blockquote removed | Founder.tsx, data.ts |
-| Scroll-driven connecting line removed from timeline | BuildAnimation.tsx |
-| Permanent progress bars removed from capability cards | Capabilities.tsx |
+1. **Content changes** (data.ts) → Update the "Data Layer" section if structure changed
+2. **New components** → Add to directory tree + component architecture section
+3. **Removed components** → Mark or remove from this file
+4. **New dependencies** → Update Tech Stack table
+5. **Config changes** → Update Build Configuration section
+6. **New CSS classes/animations** → Update Custom CSS section
+7. **New hooks** → Update Custom Hooks section
+8. **Architecture changes** → Update Component Architecture section
 
-### I → We / Personal → Company Voice Conversion
-
-| Change | File(s) |
-|---|---|
-| HERO.name → "Shivaswarajya Techno Innovation", eyebrow → company label | data.ts |
-| HERO.headline: "I turn" → "We turn", sub: removed "Founder-led" | data.ts |
-| Hero intro: removed "Hi, I'm" (company name shown directly) | Hero.tsx |
-| Hero sub-line: "Founder-led engineering" → "Engineering" | Hero.tsx |
-| All project approaches: "I designed/modelled/built" → "We designed/modelled/built" | data.ts |
-| METHODOLOGY.pitch: "mine to support" → "ours to support" | data.ts |
-| METHODOLOGY steps: "I map" → "We map", "I stay" → "we stay" | data.ts |
-| PRINCIPLES: "I keep monitoring" → "We keep monitoring" | data.ts |
-| FOUNDER: name → company, role → "Software Engineering Company", bio → team voice, highlights → team language | data.ts |
-| Philosophy quote attribution auto-updated via FOUNDER data | Philosophy.tsx |
-| Founder section: "The engineer behind" → "The team behind" | Founder.tsx |
-| Principles heading: "How I think" → "How we think" | Principles.tsx |
-| Capabilities heading: "What I build" → "What we build" | Capabilities.tsx |
-| Tech stack label: "Stack I work with" → "Stack we work with" | Capabilities.tsx |
-| Domains heading: "Sectors I serve" → "Sectors we serve" | Domains.tsx |
-| ErrorBoundary: "reach me on" → "reach us on" | ErrorBoundary.tsx |
-| Footer description: removed "Founder-led" | Footer.tsx |
-| FAQ answers (5): "I scope/ask/stay/work/audit" → "We scope/ask/stay/work/audit" | data.ts |
-| Testimonials: "Omkar delivered" → "The Shivaswarajya team delivered", "Omkar stayed" → "The Shivaswarajya team stayed" | data.ts |
-| CTA sub: "Tell me" → "Tell us", "I'll come back" → "We'll come back" | data.ts |
-| index.html: meta description, author, og:title, og:description, twitter:title, twitter:description, <title> — all removed "Omkar Patil" and "Founder-led" | index.html |
-| JsonLd LocalBusiness description: removed "Founder-led" | JsonLd.tsx |
-| manifest.json description: removed "Founder-led" | manifest.json |
-| LinkedIn URL kept as personal profile, Person schema kept for SEO | Footer.tsx, JsonLd.tsx |
+**Last updated:** 2026-08-08

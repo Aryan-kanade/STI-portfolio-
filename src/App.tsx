@@ -6,7 +6,6 @@ import { ScrollProgress } from "./components/ScrollProgress"
 import { JsonLd } from "./components/JsonLd"
 import { Hero } from "./components/Hero"
 import { Projects } from "./components/Projects"
-import { StatsBar } from "./components/StatsBar"
 import { Capabilities } from "./components/Capabilities"
 import { Contact } from "./components/Contact"
 import { Footer } from "./components/Footer"
@@ -72,7 +71,6 @@ export default function App() {
       <main id="main">
         <Hero />
         <Projects />
-        <StatsBar />
         <Capabilities />
         <Suspense fallback={<SectionSkeleton />}>
           <LazyBuildAnimation />

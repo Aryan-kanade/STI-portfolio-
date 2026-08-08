@@ -2,7 +2,7 @@ import { Reveal } from "./Shared"
 import { useCountUp } from "../lib/utils"
 
 const STATS = [
-  { value: 3, suffix: "+", label: "Industries Served", decimals: 0 },
+  { value: 4, suffix: "+", label: "Industries Served", decimals: 0 },
   { value: 6, suffix: "+", label: "Systems Delivered", decimals: 0 },
   { value: 99.9, suffix: "%", label: "Uptime", decimals: 1 },
   { value: 24, suffix: "h", label: "Response Time", decimals: 0 },
